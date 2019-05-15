@@ -1,0 +1,28 @@
+{
+  "name": "the-flix-db",
+  "version": "1.0.0",
+  "description": "Movie database API",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/James-Coates/the-flix-db.git"
+  },
+  "keywords": [
+    "movie",
+    "api",
+    "database"
+  ],
+  "author": "James Coates",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/James-Coates/the-flix-db/issues"
+  },
+  "homepage": "https://github.com/James-Coates/the-flix-db#readme",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "express": "^4.16.4"
+  }
+}
