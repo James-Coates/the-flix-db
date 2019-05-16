@@ -1,9 +1,4 @@
-const express = require('express');
-const morgan = require('morgan');
-const app = express();
-
-// Movie List
-let movies = [
+[
   {
     "Title": "RAIDERS OF THE LOST ARK",
     "Year": "1982",
@@ -55,38 +50,3 @@ let movies = [
     "Poster": "https://m.media-amazon.com/images/M/MV5BNGNhMDIzZTUtNTBlZi00MTRlLWFjM2ItYzViMjE3YzI5MjljXkEyXkFqcGdeQXVyNzkwMjQ5NzM@._V1_SX300.jpg"
   }
 ]
-
-// Route all requests for static files to public folder
-app.use(express.static(__dirname + '/public'));
-
-// Use Morgan Middlware for logging requests
-app.use(morgan('common'));
-
-// Error Handling Middleware
-app.use((err, req, res, next) => {
-  console.error(err.stack);
-  res.status(500).send('Something Broke');
-});
-
-// #region ** ROUTES
-
-// Index Route
-app.get('/', (req, res) => {
-  res.send('Welcome to the FLEXdb');
-});
-
-// Movies Route
-app.get('/movies', (req, res) => {
-  res.json(movies);
-});
-
-// Docs Route
-app.get('/documentation', (req, res) => {
-  res.sendFile('documentation.html', {"root": __dirname + '/public'});
-});
-
-// Listen on 8080
-app.listen(8080, ()=>{
-  console.log('Server Has Started');
-});
-// #endregion ** ROUTES
