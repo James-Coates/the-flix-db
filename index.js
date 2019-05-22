@@ -72,6 +72,7 @@ app.use(morgan('common'));
 
 // Error Handling Middleware
 app.use((err, req, res, next) => {
+  // eslint-disable-next-line no-console
   console.error(err.stack);
   res.status(500).send('Something Broke');
 });
@@ -93,8 +94,43 @@ app.get('/documentation', (req, res) => {
   res.sendFile('documentation.html', { root: `${__dirname}/public` });
 });
 
+// Temporary API Endpoint Routes
+
+app.get('/movies/:title', (req, res) => {
+  res.send('Successful GET request on movie route');
+});
+
+app.get('/genres/:name', (req, res) => {
+  res.send('Successful GET request on genre route');
+});
+
+app.get('/directors/:name', (req, res) => {
+  res.send('Successful GET request on directors route');
+});
+
+app.post('/users/', (req, res) => {
+  res.send('Successful POST request for new user');
+});
+
+app.put('/users/:id', (req, res) => {
+  res.send('Successful PUT request for existing user');
+});
+
+app.post('/users/:id/:movie', (req, res) => {
+  res.send('Successful POST request for new user associated movie');
+});
+
+app.delete('/users/:id/:movie', (req, res) => {
+  res.send('Successful DELETE request for user associated movie');
+});
+
+app.delete('/users/:id', (req, res) => {
+  res.send('Successful DELETE request for existing user');
+});
+
 // Listen on 8080
 app.listen(8080, () => {
+  // eslint-disable-next-line no-console
   console.log('Server Has Started');
 });
 // #endregion ** ROUTES

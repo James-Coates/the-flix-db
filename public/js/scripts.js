@@ -64,14 +64,14 @@
       },
       {
         description: 'Remove movie from user favourites',
-        url: '/users/:ID/:movie',
+        url: '/users/:id/:movie',
         method: 'DELETE',
         request: '-',
         response: 'A message saying the movie has been deleted',
       },
       {
         description: 'Delete user',
-        url: '/users/:ID',
+        url: '/users/:id',
         method: 'DELETE',
         request: '-',
         response: 'A message saying the user has been deleted',
