@@ -1,7 +1,17 @@
+/* eslint-disable no-console */
 const express = require('express');
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
 const fs = require('fs');
+const mongoose = require('mongoose');
+const models = require('./models.js');
+
+// DB Models
+const Movies = models.Movie;
+const Users = models.User;
+
+// Connect to DB
+mongoose.connect('mongodb://localhost:27017/theFLIXdb', { useNewUrlParser: true });
 
 const app = express();
 
@@ -32,49 +42,132 @@ app.get('/', (req, res) => {
   res.send('Welcome to the FLEXdb');
 });
 
-// Movies Route
-app.get('/movies', (req, res) => {
-  res.json(movies);
-});
-
 // Docs Route
 app.get('/documentation', (req, res) => {
   res.sendFile('documentation.html', { root: `${__dirname}/public` });
 });
 
-// Temporary API Endpoint Routes
+// API Endpoint Routes
 
+// GET all Movies Route
+app.get('/movies', (req, res) => {
+  Movies.find()
+    .then(allMovies => res.status(201).json(allMovies)) // Return all movies as JSON
+    .catch(err => res.status(500).send(`Error: ${err}`)); // Simple error handling
+});
+
+// GET all Users Route (Extra)
+app.get('/users', (req, res) => {
+  Users.find()
+    .then(allUsers => res.status(201).json(allUsers)) // Return all Users as JSON
+    .catch(err => res.status(500).send(`Error: ${err}`)); // Simple error handling
+});
+
+// GET Movie by Title
 app.get('/movies/:title', (req, res) => {
-  const movieTitle = req.params.title;
-  res.json(movies.find(movie => movie.title === movieTitle));
+  Movies.findOne({ Title: req.params.title })
+    .then(movie => {
+      // Return movie as JSON only if found else return Not Found.
+      if (!movie) return res.status(404).send(`${req.params.title} not found`);
+      res.status(201).json(movie);
+    })
+    .catch(err => res.status(500).send(`Error: ${err}`)); // Simple error handling
 });
 
+// Get Details of Genre
 app.get('/genres/:name', (req, res) => {
-  res.send('Successful GET request on genre route');
+  Movies.findOne({ 'Genre.Name': req.params.name })
+    .then(movie => {
+      // Return genre details only if found else return Not Found.
+      if (!movie) return res.status(404).send(`${req.params.name} not found`);
+      res.status(201).json(movie.Genre);
+    })
+    .catch(err => res.status(500).send(`Error: ${err}`)); // Simple error handling
 });
 
+// Get List of Movies by Director Name
 app.get('/directors/:name', (req, res) => {
-  res.send('Successful GET request on directors route');
+  Movies.findOne({ 'Director.Name': req.params.name })
+    .then(movie => {
+      // Return director details only if found else return Not Found.
+      if (!movie) return res.status(404).send(`${req.params.name} not found`);
+      res.status(201).json(movie.Director);
+    })
+    .catch(err => res.status(500).send(`Error: ${err}`)); // Simple error handling
 });
 
-app.post('/users/', (req, res) => {
-  res.send('Successful POST request for new user');
+// Add New User
+app.post('/users', (req, res) => {
+  Users.findOne({ Username: req.body.Username })
+    .then(user => {
+      // Check if user exists, if not add user
+      if (user) return res.status(400).send(`${req.body.Username} already exists`);
+      Users.create({
+        Username: req.body.Username,
+        Password: req.body.Password,
+        Email: req.body.Email,
+        Birthday: req.body.Birthday,
+      })
+        .then(userAdded => res.status(201).json(userAdded)) // Return added user as JSON
+        .catch(err => res.status(500).send(`Error: ${err}`)); // Simple error handling
+    })
+    .catch(err => res.status(500).send(`Error: ${err}`)); // Simple error handling
 });
 
+// Modify User
 app.put('/users/:id', (req, res) => {
-  res.send('Successful PUT request for existing user');
+  Users.findByIdAndUpdate(
+    req.params.id,
+    {
+      $set: {
+        Username: req.body.Username,
+        Password: req.body.Password,
+        Email: req.body.Email,
+        Birthday: req.body.Birthday,
+      },
+    },
+    { new: true } // Make sure updated document is returned
+  )
+    .then(updatedUser => res.status(201).json(updatedUser)) // Return modified user as JSON
+    .catch(err => res.status(500).send(`Error: ${err}`)); // Simple error handling
 });
 
-app.post('/users/:id/:movie', (req, res) => {
-  res.send('Successful POST request for new user associated movie');
+// Add User Favourite Movie
+app.post('/users/:username/movies/:movieid', (req, res) => {
+  // Check if movie exists then find user and push movieid to favouriteMovies
+  Movies.findOne({ _id: req.params.movieid })
+    .then(movie => {
+      Users.findOneAndUpdate(
+        { Username: req.params.username },
+        { $push: { FavouriteMovies: movie._id } }, // Push found movieid to array
+        { new: true } // Make sure updated document is returned
+      )
+        .then(modifiedUser => res.status(201).json(modifiedUser)) // Return modified user as JSON
+        .catch(err => res.status(500).send(`Error: ${err}`)); // Simple error handling
+    })
+    .catch(err => res.status(500).send(`Error: ${err}`)); // Simple error handling
 });
 
-app.delete('/users/:id/:movie', (req, res) => {
-  res.send('Successful DELETE request for user associated movie');
+// Delete User Asscociated Movie
+app.delete('/users/:username/movies/:movieid', (req, res) => {
+  Users.findOneAndUpdate(
+    { Username: req.params.username },
+    { $pull: { FavouriteMovies: req.params.movieid } },
+    { new: true } // Make sure updated document is returned
+  )
+    .then(modifiedUser => res.status(201).json(modifiedUser)) // Return modified user as JSON
+    .catch(err => res.status(500).send(`Error: ${err}`)); // Simple error handling
 });
 
-app.delete('/users/:id', (req, res) => {
-  res.send('Successful DELETE request for existing user');
+// Delete User Route
+app.delete('/users/:username', (req, res) => {
+  Users.findOneAndRemove({ Username: req.params.username })
+    .then(user => {
+      // Check if user exists and send appropriate response
+      if (!user) return res.status(400).send(`${req.params.Username} was not found`); // Return message user not found
+      res.status(200).send(`${req.params.Username} was deleted.`); // Return message of deletion
+    })
+    .catch(err => res.status(500).send(`Error: ${err}`));
 });
 
 // Listen on 8080
