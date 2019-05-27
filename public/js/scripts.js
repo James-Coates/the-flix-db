@@ -71,7 +71,7 @@
       },
       {
         description: 'Delete user',
-        url: '/users/:id',
+        url: '/users/:username',
         method: 'DELETE',
         request: '-',
         response: 'A message saying the user has been deleted',
