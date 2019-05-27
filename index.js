@@ -2,7 +2,7 @@
 const express = require('express');
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
-const fs = require('fs');
+// const fs = require('fs');
 const mongoose = require('mongoose');
 const models = require('./models.js');
 
@@ -16,8 +16,8 @@ mongoose.connect('mongodb://localhost:27017/theFLIXdb', { useNewUrlParser: true 
 const app = express();
 
 // Movie List
-const readMovies = fs.readFileSync('movies.json');
-const movies = JSON.parse(readMovies);
+// const readMovies = fs.readFileSync('movies.json');
+// const movies = JSON.parse(readMovies);
 
 // Route all requests for static files to public folder
 app.use(express.static(`${__dirname}/public`));
