@@ -115,9 +115,9 @@ app.post('/users', (req, res) => {
 });
 
 // Modify User
-app.put('/users/:id', (req, res) => {
-  Users.findByIdAndUpdate(
-    req.params.id,
+app.put('/users/:username', (req, res) => {
+  Users.findOneAndUpdate(
+    { Username: req.params.username },
     {
       $set: {
         Username: req.body.Username,
@@ -165,7 +165,7 @@ app.delete('/users/:username', (req, res) => {
     .then(user => {
       // Check if user exists and send appropriate response
       if (!user) return res.status(400).send(`${req.params.Username} was not found`); // Return message user not found
-      res.status(200).send(`${req.params.Username} was deleted.`); // Return message of deletion
+      res.status(200).send(`${req.params.username} was deleted.`); // Return message of deletion
     })
     .catch(err => res.status(500).send(`Error: ${err}`));
 });
