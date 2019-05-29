@@ -13,11 +13,11 @@ const Movies = models.Movie;
 const Users = models.User;
 
 // Connect to DB
-mongoose.connect('mongodb://localhost:27017/theFLIXdb', { useNewUrlParser: true });
-
-// Restart Database # For testing
-restart.restartDb(restart.starterMovies, Movies);
-restart.restartDb(restart.starterUsers, Users);
+mongoose.connect('mongodb://localhost:27017/theFLIXdb', { useNewUrlParser: true }).then(() => {
+  // Restart Database # For testing
+  restart.restartDb(restart.starterMovies, Movies); // Turn on/off as required
+  restart.restartDb(restart.starterUsers, Users); // Turn on/off as required
+});
 
 const app = express();
 

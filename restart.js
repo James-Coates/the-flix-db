@@ -1,22 +1,15 @@
-/* eslint-disable no-console */
-const mongoose = require('mongoose');
-const models = require('./models.js');
-
-const Movies = models.Movie;
-const Users = models.User;
-
-// mongoose.connect('mongodb://localhost:27017/theFLIXdb', { useNewUrlParser: true });
-
 function restartDb(array, db) {
-  db.deleteMany({}, err => console.error(err));
+  // Empty database
+  db.deleteMany({}, err => {
+    if (err) return console.error(err);
+  });
   array.forEach(item => {
     db.create(item).catch(err => console.error(err));
   });
+  console.log(`${db.modelName} database has been reset`);
 }
 
 module.exports.restartDb = restartDb;
-
-// Movies.deleteMany({}, err => console.error(err));
 
 module.exports.starterMovies = [
   {
@@ -202,9 +195,6 @@ module.exports.starterMovies = [
     featured: false,
   },
 ];
-// starterMovies.forEach(movie => {
-//   Movies.create(movie).catch(err => console.error(err));
-// });
 
 module.exports.starterUsers = [
   {
@@ -236,6 +226,3 @@ module.exports.starterUsers = [
     birthday: '1978-03-29T00:00:00.000Z',
   },
 ];
-// starterUsers.forEach(user => {
-//   Users.create(user).catch(err => console.error(err));
-// });
