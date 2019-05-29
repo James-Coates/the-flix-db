@@ -2,9 +2,11 @@
 const express = require('express');
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
-// const fs = require('fs');
 const mongoose = require('mongoose');
+const passport = require('passport');
 const models = require('./models.js');
+const restart = require('./restart.js');
+require('./passport.js');
 
 // DB Models
 const Movies = models.Movie;
@@ -13,11 +15,11 @@ const Users = models.User;
 // Connect to DB
 mongoose.connect('mongodb://localhost:27017/theFLIXdb', { useNewUrlParser: true });
 
-const app = express();
+// Restart Database # For testing
+restart.restartDb(restart.starterMovies, Movies);
+restart.restartDb(restart.starterUsers, Users);
 
-// Movie List
-// const readMovies = fs.readFileSync('movies.json');
-// const movies = JSON.parse(readMovies);
+const app = express();
 
 // Route all requests for static files to public folder
 app.use(express.static(`${__dirname}/public`));
@@ -27,6 +29,9 @@ app.use(morgan('common'));
 
 // Use body-parser middleware
 app.use(bodyParser.json());
+
+// Require auth
+const auth = require('./auth.js')(app); // Ensure express is available in auth.js
 
 // Error Handling Middleware
 app.use((err, req, res, next) => {
@@ -50,7 +55,7 @@ app.get('/documentation', (req, res) => {
 // API Endpoint Routes
 
 // GET all Movies Route
-app.get('/movies', (req, res) => {
+app.get('/movies', passport.authenticate('jwt', { session: false }), (req, res) => {
   Movies.find()
     .then(allMovies => res.status(201).json(allMovies)) // Return all movies as JSON
     .catch(err => res.status(500).send(`Error: ${err}`)); // Simple error handling
@@ -64,8 +69,8 @@ app.get('/users', (req, res) => {
 });
 
 // GET Movie by Title
-app.get('/movies/:title', (req, res) => {
-  Movies.findOne({ Title: req.params.title })
+app.get('/movies/:title', passport.authenticate('jwt', { session: false }), (req, res) => {
+  Movies.findOne({ title: req.params.title })
     .then(movie => {
       // Return movie as JSON only if found else return Not Found.
       if (!movie) return res.status(404).send(`${req.params.title} not found`);
@@ -75,7 +80,7 @@ app.get('/movies/:title', (req, res) => {
 });
 
 // Get Details of Genre
-app.get('/genres/:name', (req, res) => {
+app.get('/genres/:name', passport.authenticate('jwt', { session: false }), (req, res) => {
   Movies.findOne({ 'Genre.Name': req.params.name })
     .then(movie => {
       // Return genre details only if found else return Not Found.
@@ -86,7 +91,7 @@ app.get('/genres/:name', (req, res) => {
 });
 
 // Get List of Movies by Director Name
-app.get('/directors/:name', (req, res) => {
+app.get('/directors/:name', passport.authenticate('jwt', { session: false }), (req, res) => {
   Movies.findOne({ 'Director.Name': req.params.name })
     .then(movie => {
       // Return director details only if found else return Not Found.
@@ -115,7 +120,7 @@ app.post('/users', (req, res) => {
 });
 
 // Modify User
-app.put('/users/:username', (req, res) => {
+app.put('/users/:username', passport.authenticate('jwt', { session: false }), (req, res) => {
   Users.findOneAndUpdate(
     { Username: req.params.username },
     {
@@ -133,7 +138,7 @@ app.put('/users/:username', (req, res) => {
 });
 
 // Add User Favourite Movie
-app.post('/users/:username/movies/:movieid', (req, res) => {
+app.post('/users/:username/movies/:movieid', passport.authenticate('jwt', { session: false }), (req, res) => {
   // Check if movie exists then find user and push movieid to favouriteMovies
   Movies.findOne({ _id: req.params.movieid })
     .then(movie => {
@@ -149,7 +154,7 @@ app.post('/users/:username/movies/:movieid', (req, res) => {
 });
 
 // Delete User Asscociated Movie
-app.delete('/users/:username/movies/:movieid', (req, res) => {
+app.delete('/users/:username/movies/:movieid', passport.authenticate('jwt', { session: false }), (req, res) => {
   Users.findOneAndUpdate(
     { Username: req.params.username },
     { $pull: { FavouriteMovies: req.params.movieid } },
@@ -160,7 +165,7 @@ app.delete('/users/:username/movies/:movieid', (req, res) => {
 });
 
 // Delete User Route
-app.delete('/users/:username', (req, res) => {
+app.delete('/users/:username', passport.authenticate('jwt', { session: false }), (req, res) => {
   Users.findOneAndRemove({ Username: req.params.username })
     .then(user => {
       // Check if user exists and send appropriate response
