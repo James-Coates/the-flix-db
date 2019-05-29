@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 function restartDb(array, db) {
   // Empty database
   db.deleteMany({}, err => {
@@ -198,28 +199,28 @@ module.exports.starterMovies = [
 
 module.exports.starterUsers = [
   {
-    favouriteMovies: ['5ce949ddbbdb770a72050b17', '5ce944c2bbdb770a72050b10'],
+    favouriteMovies: [],
     username: 'james',
     password: 'password',
     email: 'james@testmail.com',
     birthday: '1992-01-01T00:00:00.000Z',
   },
   {
-    favouriteMovies: ['5ce94ac8bbdb770a72050b19', '5ce949ddbbdb770a72050b17'],
+    favouriteMovies: [],
     username: 'jon',
     password: 'password',
     email: 'jon@testmail.com',
     birthday: '1985-10-13T00:00:00.000Z',
   },
   {
-    favouriteMovies: ['5ce949ddbbdb770a72050b17', '5ce944c2bbdb770a72050b10'],
+    favouriteMovies: [],
     username: 'sansa',
     password: 'password',
     email: 'sansa@testmail.com',
     birthday: '1993-02-10T00:00:00.000Z',
   },
   {
-    favouriteMovies: ['5ce9474cbbdb770a72050b13', '5ce94530bbdb770a72050b11', '5ce944c2bbdb770a72050b10'],
+    favouriteMovies: [],
     username: 'tyrion',
     password: 'password',
     email: 'tyrion@testmail.com',

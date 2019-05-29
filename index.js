@@ -31,7 +31,7 @@ app.use(morgan('common'));
 app.use(bodyParser.json());
 
 // Require auth
-const auth = require('./auth.js')(app); // Ensure express is available in auth.js
+require('./auth.js')(app); // Ensure express is available in auth.js
 
 // Error Handling Middleware
 app.use((err, req, res, next) => {
@@ -62,7 +62,7 @@ app.get('/movies', passport.authenticate('jwt', { session: false }), (req, res) 
 });
 
 // GET all Users Route (Extra)
-app.get('/users', (req, res) => {
+app.get('/users', passport.authenticate('jwt', { session: false }), (req, res) => {
   Users.find()
     .then(allUsers => res.status(201).json(allUsers)) // Return all Users as JSON
     .catch(err => res.status(500).send(`Error: ${err}`)); // Simple error handling
@@ -81,37 +81,37 @@ app.get('/movies/:title', passport.authenticate('jwt', { session: false }), (req
 
 // Get Details of Genre
 app.get('/genres/:name', passport.authenticate('jwt', { session: false }), (req, res) => {
-  Movies.findOne({ 'Genre.Name': req.params.name })
+  Movies.findOne({ 'genre.name': req.params.name })
     .then(movie => {
       // Return genre details only if found else return Not Found.
       if (!movie) return res.status(404).send(`${req.params.name} not found`);
-      res.status(201).json(movie.Genre);
+      res.status(201).json(movie.genre);
     })
     .catch(err => res.status(500).send(`Error: ${err}`)); // Simple error handling
 });
 
 // Get List of Movies by Director Name
 app.get('/directors/:name', passport.authenticate('jwt', { session: false }), (req, res) => {
-  Movies.findOne({ 'Director.Name': req.params.name })
+  Movies.findOne({ 'director.name': req.params.name })
     .then(movie => {
       // Return director details only if found else return Not Found.
       if (!movie) return res.status(404).send(`${req.params.name} not found`);
-      res.status(201).json(movie.Director);
+      res.status(201).json(movie.director);
     })
     .catch(err => res.status(500).send(`Error: ${err}`)); // Simple error handling
 });
 
 // Add New User
 app.post('/users', (req, res) => {
-  Users.findOne({ Username: req.body.Username })
+  Users.findOne({ username: req.body.Username })
     .then(user => {
       // Check if user exists, if not add user
       if (user) return res.status(400).send(`${req.body.Username} already exists`);
       Users.create({
-        Username: req.body.Username,
-        Password: req.body.Password,
-        Email: req.body.Email,
-        Birthday: req.body.Birthday,
+        username: req.body.username,
+        password: req.body.password,
+        email: req.body.email,
+        birthday: req.body.birthday,
       })
         .then(userAdded => res.status(201).json(userAdded)) // Return added user as JSON
         .catch(err => res.status(500).send(`Error: ${err}`)); // Simple error handling
@@ -122,13 +122,13 @@ app.post('/users', (req, res) => {
 // Modify User
 app.put('/users/:username', passport.authenticate('jwt', { session: false }), (req, res) => {
   Users.findOneAndUpdate(
-    { Username: req.params.username },
+    { username: req.params.username },
     {
       $set: {
-        Username: req.body.Username,
-        Password: req.body.Password,
-        Email: req.body.Email,
-        Birthday: req.body.Birthday,
+        username: req.body.username,
+        password: req.body.password,
+        email: req.body.email,
+        birthday: req.body.birthday,
       },
     },
     { new: true } // Make sure updated document is returned
@@ -143,8 +143,8 @@ app.post('/users/:username/movies/:movieid', passport.authenticate('jwt', { sess
   Movies.findOne({ _id: req.params.movieid })
     .then(movie => {
       Users.findOneAndUpdate(
-        { Username: req.params.username },
-        { $push: { FavouriteMovies: movie._id } }, // Push found movieid to array
+        { username: req.params.username },
+        { $push: { favouriteMovies: movie._id } }, // Push found movieid to array
         { new: true } // Make sure updated document is returned
       )
         .then(modifiedUser => res.status(201).json(modifiedUser)) // Return modified user as JSON
@@ -156,8 +156,8 @@ app.post('/users/:username/movies/:movieid', passport.authenticate('jwt', { sess
 // Delete User Asscociated Movie
 app.delete('/users/:username/movies/:movieid', passport.authenticate('jwt', { session: false }), (req, res) => {
   Users.findOneAndUpdate(
-    { Username: req.params.username },
-    { $pull: { FavouriteMovies: req.params.movieid } },
+    { username: req.params.username },
+    { $pull: { favouriteMovies: req.params.movieid } },
     { new: true } // Make sure updated document is returned
   )
     .then(modifiedUser => res.status(201).json(modifiedUser)) // Return modified user as JSON
@@ -166,7 +166,7 @@ app.delete('/users/:username/movies/:movieid', passport.authenticate('jwt', { se
 
 // Delete User Route
 app.delete('/users/:username', passport.authenticate('jwt', { session: false }), (req, res) => {
-  Users.findOneAndRemove({ Username: req.params.username })
+  Users.findOneAndRemove({ username: req.params.username })
     .then(user => {
       // Check if user exists and send appropriate response
       if (!user) return res.status(400).send(`${req.params.Username} was not found`); // Return message user not found
