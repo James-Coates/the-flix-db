@@ -175,9 +175,8 @@ app.delete('/users/:username', passport.authenticate('jwt', { session: false }),
     .catch(err => res.status(500).send(`Error: ${err}`));
 });
 
-// Listen on 8080
-app.listen(8080, () => {
-  // eslint-disable-next-line no-console
-  console.log('Server Has Started');
+const port = process.env.port || 3000;
+app.listen(port, '0.0.0.0', () => {
+  console.log('Listening on port 3000');
 });
 // #endregion ** ROUTES
