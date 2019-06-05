@@ -4,6 +4,7 @@ const morgan = require('morgan');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const passport = require('passport');
+const cors = require('cors');
 const models = require('./models.js');
 const restart = require('./restart.js');
 require('./passport.js');
@@ -41,6 +42,9 @@ app.use(morgan('common'));
 
 // Use body-parser middleware
 app.use(bodyParser.json());
+
+// Use CORS - All domains
+app.use(cors());
 
 // Require auth
 require('./auth.js')(app); // Ensure express is available in auth.js
