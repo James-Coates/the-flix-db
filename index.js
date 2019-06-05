@@ -124,8 +124,8 @@ app.post('/users', (req, res) => {
   req.checkBody('username', 'Username is required').notEmpty();
   req.checkBody('username', 'Username must only contain alphanumeric charachters').isAlphanumeric();
   req.checkBody('password', 'Password is required').notEmpty();
-  req.checkBody('Email', 'Email is required').notEmpty();
-  req.checkBody('Email', 'Email does not appear to be valid').isEmail();
+  req.checkBody('email', 'Email is required').notEmpty();
+  req.checkBody('email', 'Email does not appear to be valid').isEmail();
   // Check validation object for errors
   const errors = req.validationErrors();
   if (errors) res.status(422).json({ errors });
