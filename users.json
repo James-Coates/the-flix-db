@@ -1,0 +1,30 @@
+[
+  {
+    "favouriteMovies": [],
+    "username": "james",
+    "password": "password",
+    "email": "james@testmail.com",
+    "birthday": "1992-01-01T00:00:00.000Z"
+  },
+  {
+    "favouriteMovies": [],
+    "username": "jon",
+    "password": "password",
+    "email": "jon@testmail.com",
+    "birthday": "1985-10-13T00:00:00.000Z"
+  },
+  {
+    "favouriteMovies": [],
+    "username": "sansa",
+    "password": "password",
+    "email": "sansa@testmail.com",
+    "birthday": "1993-02-10T00:00:00.000Z"
+  },
+  {
+    "favouriteMovies": [],
+    "username": "tyrion",
+    "password": "password",
+    "email": "tyrion@testmail.com",
+    "birthday": "1978-03-29T00:00:00.000Z"
+  }
+]
