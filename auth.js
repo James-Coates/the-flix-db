@@ -17,7 +17,6 @@ module.exports = router => {
     // Use LocalStrategy to check if user in db
     passport.authenticate('local', { session: false }, (err, user, info) => {
       if (err || !user) {
-        //
         return res.status(400).json({
           message: 'Something is not right',
           user,

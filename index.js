@@ -14,23 +14,23 @@ const Movies = models.Movie;
 const Users = models.User;
 
 // Connect to Local DB
-// mongoose.connect('mongodb://localhost:27017/theFLIXdb', { useNewUrlParser: true }).then(() => {
-//   // Restart Database # For testing
-//   // restart.restartDb(restart.starterMovies, Movies); // Turn on/off as required
-//   // restart.restartDb(restart.starterUsers, Users); // Turn on/off as required
-// });
+mongoose.connect('mongodb://localhost:27017/theFLIXdb', { useNewUrlParser: true }).then(() => {
+  // Restart Database # For testing
+  restart.restartDb(restart.starterMovies, Movies); // Turn on/off as required
+  restart.restartDb(restart.starterUsers, Users); // Turn on/off as required
+});
 
 // Connect to Online DB
-mongoose
-  .connect(
-    'mongodb+srv://theFLIXdb-admin:010192Jac@theflixdb-h8omr.mongodb.net/theFLIXdb?retryWrites=true&w=majority',
-    { useNewUrlParser: true }
-  )
-  .then(() => {
-    // Restart Database # For testing
-    // restart.restartDb(restart.starterMovies, Movies); // Turn on/off as required
-    // restart.restartDb(restart.starterUsers, Users); // Turn on/off as required
-  });
+// mongoose
+//   .connect(
+//     'mongodb+srv://theFLIXdb-admin:010192Jac@theflixdb-h8omr.mongodb.net/theFLIXdb?retryWrites=true&w=majority',
+//     { useNewUrlParser: true }
+//   )
+//   .then(() => {
+//     // Restart Database # For testing
+//     // restart.restartDb(restart.starterMovies, Movies); // Turn on/off as required
+//     // restart.restartDb(restart.starterUsers, Users); // Turn on/off as required
+//   });
 
 const app = express();
 
@@ -78,7 +78,7 @@ app.get('/movies', passport.authenticate('jwt', { session: false }), (req, res) 
 });
 
 // GET all Users Route (Extra)
-app.get('/users', passport.authenticate('jwt', { session: false }), (req, res) => {
+app.get('/users', (req, res) => {
   Users.find()
     .then(allUsers => res.status(201).json(allUsers)) // Return all Users as JSON
     .catch(err => res.status(500).send(`Error: ${err}`)); // Simple error handling
@@ -119,13 +119,14 @@ app.get('/directors/:name', passport.authenticate('jwt', { session: false }), (r
 
 // Add New User
 app.post('/users', (req, res) => {
-  Users.findOne({ username: req.body.Username })
+  const hashedPassword = Users.hashPassword(req.body.password);
+  Users.findOne({ username: req.body.username })
     .then(user => {
       // Check if user exists, if not add user
-      if (user) return res.status(400).send(`${req.body.Username} already exists`);
+      if (user) return res.status(400).send(`${req.body.username} already exists`);
       Users.create({
         username: req.body.username,
-        password: req.body.password,
+        password: hashedPassword,
         email: req.body.email,
         birthday: req.body.birthday,
       })

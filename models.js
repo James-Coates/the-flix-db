@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const bcrypt = require('bcrypt');
 
 const movieSchema = new mongoose.Schema({
   title: { type: String, required: true },
@@ -25,6 +26,11 @@ const userSchema = new mongoose.Schema({
   birthday: Date,
   favouriteMovies: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Movie' }],
 });
+
+userSchema.statics.hashPassword = password => bcrypt.hashSync(password, 10); // Hash Password Function - Salt Rounds 10
+userSchema.methods.validatePassword = function(password) {
+  return bcrypt.compareSync(password, this.password); // Does not like ES6 arrow style functions
+}; // Arrow functions explicitly prevent binding this
 
 const Movie = mongoose.model('Movie', movieSchema);
 const User = mongoose.model('User', userSchema);
