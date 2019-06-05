@@ -5,6 +5,7 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const passport = require('passport');
 const cors = require('cors');
+const validator = require('express-validator');
 const models = require('./models.js');
 const restart = require('./restart.js');
 require('./passport.js');
@@ -34,17 +35,17 @@ mongoose.connect('mongodb://localhost:27017/theFLIXdb', { useNewUrlParser: true 
 
 const app = express();
 
-// Route all requests for static files to public folder
-app.use(express.static(`${__dirname}/public`));
+// App Middleware
 
-// Use Morgan Middlware for logging requests
-app.use(morgan('common'));
+app.use(express.static(`${__dirname}/public`)); // Route all requests for static files to public folder
 
-// Use body-parser middleware
-app.use(bodyParser.json());
+app.use(morgan('common')); // Use Morgan Middlware for logging requests
 
-// Use CORS - All domains
-app.use(cors());
+app.use(bodyParser.json()); // Use body-parser middleware
+
+app.use(cors()); // Use CORS - All domains
+
+app.use(validator()); // Use server-side data validation
 
 // Require auth
 require('./auth.js')(app); // Ensure express is available in auth.js
@@ -119,6 +120,16 @@ app.get('/directors/:name', passport.authenticate('jwt', { session: false }), (r
 
 // Add New User
 app.post('/users', (req, res) => {
+  // Data validation
+  req.checkBody('username', 'Username is required').notEmpty();
+  req.checkBody('username', 'Username must only contain alphanumeric charachters').isAlphanumeric();
+  req.checkBody('password', 'Password is required').notEmpty();
+  req.checkBody('Email', 'Email is required').notEmpty();
+  req.checkBody('Email', 'Email does not appear to be valid').isEmail();
+  // Check validation object for errors
+  const errors = req.validationErrors();
+  if (errors) res.status(422).json({ errors });
+
   const hashedPassword = Users.hashPassword(req.body.password);
   Users.findOne({ username: req.body.username })
     .then(user => {
