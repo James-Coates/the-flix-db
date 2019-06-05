@@ -15,23 +15,23 @@ const Movies = models.Movie;
 const Users = models.User;
 
 // Connect to Local DB
-mongoose.connect('mongodb://localhost:27017/theFLIXdb', { useNewUrlParser: true }).then(() => {
-  // Restart Database # For testing
-  restart.restartDb(restart.starterMovies, Movies); // Turn on/off as required
-  restart.restartDb(restart.starterUsers, Users); // Turn on/off as required
-});
+// mongoose.connect('mongodb://localhost:27017/theFLIXdb', { useNewUrlParser: true }).then(() => {
+//   // Restart Database # For testing
+//   restart.restartDb(restart.starterMovies, Movies); // Turn on/off as required
+//   restart.restartDb(restart.starterUsers, Users); // Turn on/off as required
+// });
 
 // Connect to Online DB
-// mongoose
-//   .connect(
-//     'mongodb+srv://theFLIXdb-admin:010192Jac@theflixdb-h8omr.mongodb.net/theFLIXdb?retryWrites=true&w=majority',
-//     { useNewUrlParser: true }
-//   )
-//   .then(() => {
-//     // Restart Database # For testing
-//     // restart.restartDb(restart.starterMovies, Movies); // Turn on/off as required
-//     // restart.restartDb(restart.starterUsers, Users); // Turn on/off as required
-//   });
+mongoose
+  .connect(
+    'mongodb+srv://theFLIXdb-admin:010192Jac@theflixdb-h8omr.mongodb.net/theFLIXdb?retryWrites=true&w=majority',
+    { useNewUrlParser: true }
+  )
+  .then(() => {
+    // Restart Database # For testing
+    // restart.restartDb(restart.starterMovies, Movies); // Turn on/off as required
+    // restart.restartDb(restart.starterUsers, Users); // Turn on/off as required
+  });
 
 const app = express();
 
