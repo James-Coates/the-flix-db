@@ -128,7 +128,7 @@ app.post('/users', (req, res) => {
   req.checkBody('email', 'Email does not appear to be valid').isEmail();
   // Check validation object for errors
   const errors = req.validationErrors();
-  if (errors) res.status(422).json({ errors });
+  if (errors) return res.status(422).json({ errors });
 
   const hashedPassword = Users.hashPassword(req.body.password);
   Users.findOne({ username: req.body.username })
