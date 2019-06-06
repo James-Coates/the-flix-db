@@ -2,7 +2,7 @@
 const passport = require('passport');
 const passportJWT = require('passport-jwt');
 const passportLocal = require('passport-local');
-const Models = require('./models.js');
+const Models = require('../db/models.js');
 
 // User model
 const Users = Models.User;

@@ -6,9 +6,9 @@ const mongoose = require('mongoose');
 const passport = require('passport');
 const cors = require('cors');
 const validator = require('express-validator');
-const models = require('./models.js');
-const restart = require('./restart.js');
-require('./passport.js');
+const models = require('./db/models.js');
+const restart = require('./db/restart.js');
+require('./server/passport.js');
 
 // DB Models
 const Movies = models.Movie;
@@ -48,7 +48,7 @@ app.use(cors()); // Use CORS - All domains
 app.use(validator()); // Use server-side data validation
 
 // Require auth
-require('./auth.js')(app); // Ensure express is available in auth.js
+require('./server/auth.js')(app); // Ensure express is available in auth.js
 
 // Error Handling Middleware
 app.use((err, req, res, next) => {
@@ -61,7 +61,7 @@ app.use((err, req, res, next) => {
 
 // Index Route
 app.get('/', (req, res) => {
-  res.send('Welcome to the FLEXdb');
+  res.sendFile('index.html', { root: `${__dirname}/public` });
 });
 
 // Docs Route
