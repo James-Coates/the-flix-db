@@ -1,5 +1,5 @@
 import React from 'react';
-import propTypes from 'prop-types';
+import PropTypes from 'prop-types';
 
 export function HeaderView(props) {
   const { getMainView, getRegisterView, getLoginView } = props;
@@ -20,7 +20,7 @@ export function HeaderView(props) {
 }
 
 HeaderView.propTypes = {
-  getMainView: propTypes.func.isRequired,
-  getRegisterView: propTypes.func.isRequired,
-  getLoginView: propTypes.func.isRequired,
+  getMainView: PropTypes.func.isRequired,
+  getRegisterView: PropTypes.func.isRequired,
+  getLoginView: PropTypes.func.isRequired,
 };
