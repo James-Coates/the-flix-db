@@ -27571,7 +27571,7 @@ function (_React$Component) {
     value: function render() {
       var _this$props = this.props,
           movie = _this$props.movie,
-          homeButton = _this$props.homeButton;
+          getMainView = _this$props.getMainView;
       if (!movie) return null;
       return _react.default.createElement("div", {
         className: "movie-view"
@@ -27607,7 +27607,7 @@ function (_React$Component) {
         className: "back-home",
         type: "submit",
         onClick: function onClick() {
-          return homeButton();
+          return getMainView();
         }
       }, "Back"));
     }
@@ -28602,7 +28602,7 @@ function LoginView(props) {
   }, "Submit")), _react.default.createElement("button", {
     type: "button",
     onClick: function onClick() {
-      return props.homeButton();
+      return props.getMainView();
     }
   }, "Cancel"));
 } // Define Proptypes
@@ -28610,7 +28610,7 @@ function LoginView(props) {
 
 LoginView.propTypes = {
   onLoggedIn: _propTypes.default.func.isRequired,
-  homeButton: _propTypes.default.func.isRequired
+  getMainView: _propTypes.default.func.isRequired
 };
 },{"react":"../../node_modules/react/index.js","prop-types":"../../node_modules/prop-types/index.js"}],"components/register-view/register-view.jsx":[function(require,module,exports) {
 "use strict";
@@ -28683,7 +28683,7 @@ function RegisterView(props) {
   }, "Submit")), _react.default.createElement("button", {
     type: "button",
     onClick: function onClick() {
-      return props.homeButton();
+      return props.getMainView();
     }
   }, "Cancel"));
 } // Define Proptypes
@@ -28691,7 +28691,50 @@ function RegisterView(props) {
 
 RegisterView.propTypes = {
   onLoggedIn: _propTypes.default.func.isRequired,
-  homeButton: _propTypes.default.func.isRequired
+  getMainView: _propTypes.default.func.isRequired
+};
+},{"react":"../../node_modules/react/index.js","prop-types":"../../node_modules/prop-types/index.js"}],"components/header-view/header-view.jsx":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.HeaderView = HeaderView;
+
+var _react = _interopRequireDefault(require("react"));
+
+var _propTypes = _interopRequireDefault(require("prop-types"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function HeaderView(props) {
+  var getMainView = props.getMainView,
+      getRegisterView = props.getRegisterView,
+      getLoginView = props.getLoginView;
+  return _react.default.createElement("div", {
+    className: "header"
+  }, _react.default.createElement("button", {
+    type: "button",
+    onClick: function onClick() {
+      return getMainView();
+    }
+  }, "Home"), _react.default.createElement("button", {
+    type: "button",
+    onClick: function onClick() {
+      return getRegisterView();
+    }
+  }, "Register"), _react.default.createElement("button", {
+    type: "button",
+    onClick: function onClick() {
+      return getLoginView();
+    }
+  }, "Login"));
+}
+
+HeaderView.propTypes = {
+  getMainView: _propTypes.default.func.isRequired,
+  getRegisterView: _propTypes.default.func.isRequired,
+  getLoginView: _propTypes.default.func.isRequired
 };
 },{"react":"../../node_modules/react/index.js","prop-types":"../../node_modules/prop-types/index.js"}],"components/main-view/main-view.jsx":[function(require,module,exports) {
 "use strict";
@@ -28712,6 +28755,8 @@ var _movieView = require("../movie-view/movie-view");
 var _loginView = require("../login-view/login-view");
 
 var _registerView = require("../register-view/register-view");
+
+var _headerView = require("../header-view/header-view");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -28821,7 +28866,7 @@ function (_React$Component) {
         onLoggedIn: function onLoggedIn(user) {
           return _this3.onLoggedIn(user);
         },
-        homeButton: function homeButton() {
+        getMainView: function getMainView() {
           return _this3.getMainView();
         }
       }); // Check if user logged in or if register selected
@@ -28830,7 +28875,7 @@ function (_React$Component) {
         onLoggedIn: function onLoggedIn(user) {
           return _this3.onLoggedIn(user);
         },
-        homeButton: function homeButton() {
+        getMainView: function getMainView() {
           return _this3.getMainView();
         }
       }); // Before movies are loaded
@@ -28840,9 +28885,19 @@ function (_React$Component) {
       });
       return _react.default.createElement("div", {
         className: "main-view"
-      }, selectedMovie ? _react.default.createElement(_movieView.MovieView, {
+      }, _react.default.createElement(_headerView.HeaderView, {
+        getMainView: function getMainView() {
+          return _this3.getMainView();
+        },
+        getRegisterView: function getRegisterView() {
+          return _this3.getRegisterView();
+        },
+        getLoginView: function getLoginView() {
+          return _this3.getLoginView();
+        }
+      }), selectedMovie ? _react.default.createElement(_movieView.MovieView, {
         movie: selectedMovie,
-        homeButton: function homeButton() {
+        getMainView: function getMainView() {
           return _this3.getMainView();
         }
       }) : movies.map(function (movie) {
@@ -28853,17 +28908,7 @@ function (_React$Component) {
             return _this3.onMovieClick(movie);
           }
         });
-      }), _react.default.createElement("button", {
-        type: "button",
-        onClick: function onClick() {
-          return _this3.getRegisterView();
-        }
-      }, "Register"), _react.default.createElement("button", {
-        type: "button",
-        onClick: function onClick() {
-          return _this3.getLoginView();
-        }
-      }, "Login"));
+      }));
     }
   }]);
 
@@ -28871,7 +28916,7 @@ function (_React$Component) {
 }(_react.default.Component);
 
 exports.MainView = MainView;
-},{"react":"../../node_modules/react/index.js","axios":"../../node_modules/axios/index.js","../movie-card/movie-card":"components/movie-card/movie-card.jsx","../movie-view/movie-view":"components/movie-view/movie-view.jsx","../login-view/login-view":"components/login-view/login-view.jsx","../register-view/register-view":"components/register-view/register-view.jsx"}],"../../../../../../npm-global/lib/node_modules/parcel-bundler/src/builtins/bundle-url.js":[function(require,module,exports) {
+},{"react":"../../node_modules/react/index.js","axios":"../../node_modules/axios/index.js","../movie-card/movie-card":"components/movie-card/movie-card.jsx","../movie-view/movie-view":"components/movie-view/movie-view.jsx","../login-view/login-view":"components/login-view/login-view.jsx","../register-view/register-view":"components/register-view/register-view.jsx","../header-view/header-view":"components/header-view/header-view.jsx"}],"../../../../../../npm-global/lib/node_modules/parcel-bundler/src/builtins/bundle-url.js":[function(require,module,exports) {
 var bundleURL = null;
 
 function getBundleURLCached() {

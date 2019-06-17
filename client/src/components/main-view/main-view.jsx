@@ -7,6 +7,7 @@ import { MovieCard } from '../movie-card/movie-card';
 import { MovieView } from '../movie-view/movie-view';
 import { LoginView } from '../login-view/login-view';
 import { RegisterView } from '../register-view/register-view';
+import { HeaderView } from '../header-view/header-view';
 
 export class MainView extends React.Component {
   constructor() {
@@ -69,27 +70,32 @@ export class MainView extends React.Component {
 
     // Check if user logged in or if login selected
     if (!user && loginUser)
-      return <LoginView onLoggedIn={user => this.onLoggedIn(user)} homeButton={() => this.getMainView()} />;
+      return <LoginView onLoggedIn={user => this.onLoggedIn(user)} getMainView={() => this.getMainView()} />;
 
     // Check if user logged in or if register selected
     if (!user && registerUser)
-      return <RegisterView onLoggedIn={user => this.onLoggedIn(user)} homeButton={() => this.getMainView()} />;
+      return <RegisterView onLoggedIn={user => this.onLoggedIn(user)} getMainView={() => this.getMainView()} />;
 
     // Before movies are loaded
     if (!movies) return <div className="main-view" />;
     return (
       <div className="main-view">
+        <HeaderView
+          getMainView={() => this.getMainView()}
+          getRegisterView={() => this.getRegisterView()}
+          getLoginView={() => this.getLoginView()}
+        />
         {selectedMovie ? (
-          <MovieView movie={selectedMovie} homeButton={() => this.getMainView()} />
+          <MovieView movie={selectedMovie} getMainView={() => this.getMainView()} />
         ) : (
           movies.map(movie => <MovieCard key={movie._id} movie={movie} onClick={movie => this.onMovieClick(movie)} />)
         )}
-        <button type="button" onClick={() => this.getRegisterView()}>
+        {/* <button type="button" onClick={() => this.getRegisterView()}>
           Register
         </button>
         <button type="button" onClick={() => this.getLoginView()}>
           Login
-        </button>
+        </button> */}
       </div>
     );
   }

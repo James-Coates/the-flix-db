@@ -29,7 +29,7 @@ export function LoginView(props) {
         </label>
         <button type="submit">Submit</button>
       </form>
-      <button type="button" onClick={() => props.homeButton()}>
+      <button type="button" onClick={() => props.getMainView()}>
         Cancel
       </button>
     </div>
@@ -39,5 +39,5 @@ export function LoginView(props) {
 // Define Proptypes
 LoginView.propTypes = {
   onLoggedIn: PropTypes.func.isRequired,
-  homeButton: PropTypes.func.isRequired,
+  getMainView: PropTypes.func.isRequired,
 };
