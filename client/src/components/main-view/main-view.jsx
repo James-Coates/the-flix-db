@@ -3,6 +3,7 @@
 import React from 'react';
 import axios from 'axios';
 // Import components
+import { Container, Row } from 'react-bootstrap';
 import { MovieCard } from '../movie-card/movie-card';
 import { MovieView } from '../movie-view/movie-view';
 import { LoginView } from '../login-view/login-view';
@@ -85,11 +86,17 @@ export class MainView extends React.Component {
           getRegisterView={() => this.getRegisterView()}
           getLoginView={() => this.getLoginView()}
         />
-        {selectedMovie ? (
-          <MovieView movie={selectedMovie} getMainView={() => this.getMainView()} />
-        ) : (
-          movies.map(movie => <MovieCard key={movie._id} movie={movie} onClick={movie => this.onMovieClick(movie)} />)
-        )}
+        <Container>
+          <Row>
+            {selectedMovie ? (
+              <MovieView movie={selectedMovie} getMainView={() => this.getMainView()} />
+            ) : (
+              movies.map(movie => (
+                <MovieCard key={movie._id} movie={movie} onClick={movie => this.onMovieClick(movie)} />
+              ))
+            )}
+          </Row>
+        </Container>
       </div>
     );
   }
