@@ -1,5 +1,6 @@
 /* eslint-disable react/prop-types */
 import React from 'react';
+import PropTypes from 'prop-types';
 
 export class MovieView extends React.Component {
   constructor() {
@@ -37,3 +38,18 @@ export class MovieView extends React.Component {
     );
   }
 }
+
+MovieView.propTypes = {
+  movie: PropTypes.shape({
+    title: PropTypes.string,
+    description: PropTypes.string,
+    imageUrl: PropTypes.string,
+    genre: PropTypes.shape({
+      name: PropTypes.string,
+    }),
+    director: PropTypes.shape({
+      name: PropTypes.string,
+    }),
+  }).isRequired,
+  getMainView: PropTypes.func.isRequired,
+};
