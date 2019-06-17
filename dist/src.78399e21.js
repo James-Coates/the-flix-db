@@ -28660,7 +28660,9 @@ function RegisterView(props) {
     props.onLoggedIn(user.username);
   };
 
-  return _react.default.createElement("div", null, "Register", _react.default.createElement("form", null, _react.default.createElement("label", {
+  return _react.default.createElement("div", null, "Register", _react.default.createElement("form", {
+    onSubmit: handleSubmit
+  }, _react.default.createElement("label", {
     htmlFor: "username"
   }, "Username:", _react.default.createElement("input", {
     type: "text",

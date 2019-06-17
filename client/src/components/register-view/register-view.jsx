@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
@@ -17,7 +18,7 @@ export function RegisterView(props) {
   return (
     <div>
       Register
-      <form>
+      <form onSubmit={handleSubmit}>
         <label htmlFor="username">
           Username:
           <input type="text" name="username" value={username} onChange={e => setUsername(e.target.value)} />
