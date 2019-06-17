@@ -90,12 +90,6 @@ export class MainView extends React.Component {
         ) : (
           movies.map(movie => <MovieCard key={movie._id} movie={movie} onClick={movie => this.onMovieClick(movie)} />)
         )}
-        {/* <button type="button" onClick={() => this.getRegisterView()}>
-          Register
-        </button>
-        <button type="button" onClick={() => this.getLoginView()}>
-          Login
-        </button> */}
       </div>
     );
   }
