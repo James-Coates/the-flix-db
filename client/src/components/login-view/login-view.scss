@@ -1,0 +1,28 @@
+@import "../../index.scss";
+@import "../../variables.scss";
+
+.login__row {
+  height: 100%;
+}
+
+.login__col {
+  padding: 0;
+}
+
+.login__image {
+  background-color: $color-primary;
+  height: 100%;
+}
+
+.login__ui {
+  width: 75%;
+  margin: 0 auto;
+  position: absolute;
+  top: 45%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.login__head {
+  padding-bottom: 15px;
+}

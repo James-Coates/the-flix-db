@@ -2,10 +2,14 @@
 /* eslint-disable jsx-a11y/label-has-for */
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
+import { Container, Row, Col, Form, Button } from 'react-bootstrap';
+import './login-view.scss';
 
 export function LoginView(props) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+
+  const { getMainView } = props;
 
   const handleSubmit = e => {
     e.preventDefault();
@@ -17,23 +21,45 @@ export function LoginView(props) {
   };
 
   return (
-    <div>
-      Login
-      <form onSubmit={handleSubmit}>
-        <label htmlFor="username">
-          Username:
-          <input type="text" name="username" value={username} onChange={e => setUsername(e.target.value)} />
-        </label>
-        <label htmlFor="password">
-          Password:
-          <input type="text" name="password" value={password} onChange={e => setPassword(e.target.value)} />
-        </label>
-        <button type="submit">Submit</button>
-      </form>
-      <button type="button" onClick={() => props.getMainView()}>
-        Cancel
-      </button>
-    </div>
+    <Container fluid className="container-fill">
+      <Row className="login__row">
+        <Col className="login__col hide-sm" sm={0} md={5}>
+          <div className="login__image" />
+        </Col>
+        <Col className="login__col" md={7}>
+          <div className="login__ui">
+            <div className="login__head">
+              <h1>Sign In</h1>
+              <p>Sign in to continue to theFLIXdb.</p>
+            </div>
+            <div className="login__form">
+              <Form onSubmit={handleSubmit}>
+                <Form.Control
+                  type="username"
+                  placeholder="Username"
+                  value={username}
+                  onChange={e => setUsername(e.target.value)}
+                  className="form-input"
+                />
+                <Form.Control
+                  type="password"
+                  placeholder="Password"
+                  value={password}
+                  onChange={e => setPassword(e.target.value)}
+                  className="form-input"
+                />
+                <Button variant="primary" type="submit" block className="form-button">
+                  Submit
+                </Button>
+              </Form>
+              <Button variant="danger" type="button" block className="form-button" onClick={getMainView}>
+                Cancel
+              </Button>
+            </div>
+          </div>
+        </Col>
+      </Row>
+    </Container>
   );
 }
 

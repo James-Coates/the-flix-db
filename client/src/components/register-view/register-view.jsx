@@ -1,6 +1,8 @@
 /* eslint-disable no-console */
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
+import { Container, Row, Col, Form, Button } from 'react-bootstrap';
+import './register-view.scss';
 
 export function RegisterView(props) {
   const [username, setUsername] = useState('');
@@ -16,23 +18,45 @@ export function RegisterView(props) {
   };
 
   return (
-    <div>
-      Register
-      <form onSubmit={handleSubmit}>
-        <label htmlFor="username">
-          Username:
-          <input type="text" name="username" value={username} onChange={e => setUsername(e.target.value)} />
-        </label>
-        <label htmlFor="password">
-          Password:
-          <input type="text" name="password" value={password} onChange={e => setPassword(e.target.value)} />
-        </label>
-        <button type="submit">Submit</button>
-      </form>
-      <button type="button" onClick={() => props.getMainView()}>
-        Cancel
-      </button>
-    </div>
+    <Container fluid className="container-fill">
+      <Row className="register__row">
+        <Col className="register__col hide-sm" sm={0} md={5}>
+          <div className="register__image" />
+        </Col>
+        <Col className="register__col" md={7}>
+          <div className="register__ui">
+            <div className="register__head">
+              <h1>Sign Up</h1>
+              <p>Sign up to use some great features on theFLIXdb.</p>
+            </div>
+            <div className="register__form">
+              <Form onSubmit={handleSubmit}>
+                <Form.Control
+                  type="username"
+                  placeholder="Username"
+                  value={username}
+                  onChange={e => setUsername(e.target.value)}
+                  className="form-input"
+                />
+                <Form.Control
+                  type="password"
+                  placeholder="Password"
+                  value={password}
+                  onChange={e => setPassword(e.target.value)}
+                  className="form-input"
+                />
+                <Button variant="primary" type="submit" block className="form-button">
+                  Submit
+                </Button>
+              </Form>
+              <Button variant="danger" type="button" block className="form-button" onClick={() => props.getMainView()}>
+                Cancel
+              </Button>
+            </div>
+          </div>
+        </Col>
+      </Row>
+    </Container>
   );
 }
 
