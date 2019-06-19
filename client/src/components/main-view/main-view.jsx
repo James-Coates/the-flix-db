@@ -9,6 +9,7 @@ import { MovieView } from '../movie-view/movie-view';
 import { LoginView } from '../login-view/login-view';
 import { RegisterView } from '../register-view/register-view';
 import { HeaderView } from '../header-view/header-view';
+import './main-view.scss';
 
 export class MainView extends React.Component {
   constructor() {
@@ -86,17 +87,17 @@ export class MainView extends React.Component {
           getRegisterView={() => this.getRegisterView()}
           getLoginView={() => this.getLoginView()}
         />
-        <Container>
-          <Row>
-            {selectedMovie ? (
-              <MovieView movie={selectedMovie} getMainView={() => this.getMainView()} />
-            ) : (
-              movies.map(movie => (
+        {selectedMovie ? (
+          <MovieView movie={selectedMovie} getMainView={() => this.getMainView()} />
+        ) : (
+          <Container>
+            <Row>
+              {movies.map(movie => (
                 <MovieCard key={movie._id} movie={movie} onClick={movie => this.onMovieClick(movie)} />
-              ))
-            )}
-          </Row>
-        </Container>
+              ))}
+            </Row>
+          </Container>
+        )}
       </div>
     );
   }

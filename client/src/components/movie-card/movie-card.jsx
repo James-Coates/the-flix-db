@@ -3,12 +3,13 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 import React from 'react';
 import { Col, Card, Button } from 'react-bootstrap';
+import './movie-card.scss';
 
 export class MovieCard extends React.Component {
   render() {
     const { movie, onClick } = this.props;
     return (
-      <Col md={3}>
+      <Col md={4} lg={3}>
         <Card className="movie-card">
           <Card.Img variant="top" src={movie.imagePath} onClick={() => onClick(movie)} />
           <Card.Body>
