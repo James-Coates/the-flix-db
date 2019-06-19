@@ -14,9 +14,28 @@
 .movie-poster {
   width: 100%;
 }
-.movie-trailer {
+.movie-view__trailer {
   width: 100%;
   height: 100%;
   background-color: gray;
   text-align: center;
+}
+
+.movie-view__info {
+  padding: 10px 0 100px 0;
+}
+
+.movie-desc__holder {
+  margin-top: 10px;
+}
+
+.movie-desc__label {
+  font-weight: 500;
+  display: inline-block;
+}
+
+.movie-desc__value {
+  font-weight: 400;
+  display: inline-block;
+  margin-left: 10px;
 }

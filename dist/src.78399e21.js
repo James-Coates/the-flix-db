@@ -44100,9 +44100,7 @@ function (_React$Component) {
   _createClass(MovieView, [{
     key: "render",
     value: function render() {
-      var _this$props = this.props,
-          movie = _this$props.movie,
-          getMainView = _this$props.getMainView;
+      var movie = this.props.movie;
       if (!movie) return null;
       return _react.default.createElement("div", {
         className: "movie-view"
@@ -44117,7 +44115,7 @@ function (_React$Component) {
       })), _react.default.createElement(_reactBootstrap.Col, {
         md: 8
       }, _react.default.createElement("div", {
-        className: "movie-trailer"
+        className: "movie-view__trailer"
       }, _react.default.createElement("iframe", {
         title: "movie-trailer",
         id: "ytplayer",
@@ -44126,21 +44124,29 @@ function (_React$Component) {
         height: "100%",
         src: "https://www.youtube.com/embed/GLPJSmUHZvU?autoplay=0",
         frameBorder: "0"
-      })))))), _react.default.createElement(_reactBootstrap.Container, null, _react.default.createElement("div", {
+      })))))), _react.default.createElement(_reactBootstrap.Container, {
+        className: "movie-view__info"
+      }, _react.default.createElement(_reactBootstrap.Row, null, _react.default.createElement(_reactBootstrap.Col, {
+        md: 8
+      }, _react.default.createElement("h3", null, "Description:"), _react.default.createElement("div", {
         className: "value"
-      }, movie.description), _react.default.createElement("div", {
-        className: "movie-genre"
+      }, movie.description)), _react.default.createElement(_reactBootstrap.Col, {
+        md: 4
       }, _react.default.createElement("div", {
-        className: "label"
-      }, "Genre"), _react.default.createElement("div", {
-        className: "value"
+        className: "movie-desc__holder"
+      }, _react.default.createElement("div", {
+        className: "movie-desc"
+      }, _react.default.createElement("div", {
+        className: "movie-desc__label"
+      }, "Genre:"), _react.default.createElement("div", {
+        className: "movie-desc__value"
       }, movie.genre.name)), _react.default.createElement("div", {
-        className: "movie-director"
+        className: "movie-desc"
       }, _react.default.createElement("div", {
-        className: "label"
-      }, "Director"), _react.default.createElement("div", {
-        className: "value"
-      }, movie.director.name))));
+        className: "movie-desc__label"
+      }, "Director:"), _react.default.createElement("div", {
+        className: "movie-desc__value"
+      }, movie.director.name)))))));
     }
   }]);
 

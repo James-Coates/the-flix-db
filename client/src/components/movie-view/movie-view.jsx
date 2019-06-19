@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Jumbotron, Container, Row, Col, Button } from 'react-bootstrap';
+import { Jumbotron, Container, Row, Col } from 'react-bootstrap';
 import './movie-view.scss';
 
 export class MovieView extends React.Component {
@@ -11,7 +11,7 @@ export class MovieView extends React.Component {
   }
 
   render() {
-    const { movie, getMainView } = this.props;
+    const { movie } = this.props;
 
     if (!movie) return null;
     return (
@@ -24,7 +24,7 @@ export class MovieView extends React.Component {
                 <img src={movie.imagePath} alt="Movie Poster" className="movie-poster" />
               </Col>
               <Col md={8}>
-                <div className="movie-trailer">
+                <div className="movie-view__trailer">
                   {/* Temporary static iframe */}
                   <iframe
                     title="movie-trailer"
@@ -40,16 +40,25 @@ export class MovieView extends React.Component {
             </Row>
           </Container>
         </Jumbotron>
-        <Container>
-          <div className="value">{movie.description}</div>
-          <div className="movie-genre">
-            <div className="label">Genre</div>
-            <div className="value">{movie.genre.name}</div>
-          </div>
-          <div className="movie-director">
-            <div className="label">Director</div>
-            <div className="value">{movie.director.name}</div>
-          </div>
+        <Container className="movie-view__info">
+          <Row>
+            <Col md={8}>
+              <h3>Description:</h3>
+              <div className="value">{movie.description}</div>
+            </Col>
+            <Col md={4}>
+              <div className="movie-desc__holder">
+                <div className="movie-desc">
+                  <div className="movie-desc__label">Genre:</div>
+                  <div className="movie-desc__value">{movie.genre.name}</div>
+                </div>
+                <div className="movie-desc">
+                  <div className="movie-desc__label">Director:</div>
+                  <div className="movie-desc__value">{movie.director.name}</div>
+                </div>
+              </div>
+            </Col>
+          </Row>
         </Container>
       </div>
     );
