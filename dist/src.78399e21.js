@@ -44165,8 +44165,7 @@ MovieView.propTypes = {
     director: _propTypes.default.shape({
       name: _propTypes.default.string
     })
-  }).isRequired,
-  getMainView: _propTypes.default.func.isRequired
+  }).isRequired
 };
 },{"react":"../../node_modules/react/index.js","prop-types":"../../node_modules/prop-types/index.js","react-bootstrap":"../../node_modules/react-bootstrap/es/index.js","./movie-view.scss":"components/movie-view/movie-view.scss"}],"components/login-view/login-view.jsx":[function(require,module,exports) {
 "use strict";

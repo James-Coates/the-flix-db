@@ -77,5 +77,4 @@ MovieView.propTypes = {
       name: PropTypes.string,
     }),
   }).isRequired,
-  getMainView: PropTypes.func.isRequired,
 };
