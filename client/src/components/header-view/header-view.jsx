@@ -7,17 +7,6 @@ export function HeaderView(props) {
   const { getMainView, getRegisterView, getLoginView } = props;
 
   return (
-    // <div className="header">
-    //   <button type="button" onClick={() => getMainView()}>
-    //     Home
-    //   </button>
-    //   <button type="button" onClick={() => getRegisterView()}>
-    //     Register
-    //   </button>
-    //   <button type="button" onClick={() => getLoginView()}>
-    //     Login
-    //   </button>
-    // </div>
     <div className="header">
       <Container>
         <Navbar variant="dark" expand="md">
@@ -25,11 +14,10 @@ export function HeaderView(props) {
             theFLIXdb
           </Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
-          <Navbar.Collapse id="basic-navbar-nav">
-            <Nav className="mr-auto">
-              <Nav.Link onClick={() => getMainView()}>Home</Nav.Link>
-              <Nav.Link onClick={() => getRegisterView()}>Register</Nav.Link>
-              <Nav.Link onClick={() => getLoginView()}>Login</Nav.Link>
+          <Navbar.Collapse id="basic-navbar-nav" className="justify-content-end">
+            <Nav>
+              <Nav.Link onClick={() => getRegisterView()}>Sign Up</Nav.Link>
+              <Nav.Link onClick={() => getLoginView()}>Log In</Nav.Link>
             </Nav>
           </Navbar.Collapse>
         </Navbar>
