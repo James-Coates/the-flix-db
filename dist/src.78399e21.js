@@ -44167,7 +44167,12 @@ MovieView.propTypes = {
     })
   }).isRequired
 };
-},{"react":"../../node_modules/react/index.js","prop-types":"../../node_modules/prop-types/index.js","react-bootstrap":"../../node_modules/react-bootstrap/es/index.js","./movie-view.scss":"components/movie-view/movie-view.scss"}],"components/login-view/login-view.jsx":[function(require,module,exports) {
+},{"react":"../../node_modules/react/index.js","prop-types":"../../node_modules/prop-types/index.js","react-bootstrap":"../../node_modules/react-bootstrap/es/index.js","./movie-view.scss":"components/movie-view/movie-view.scss"}],"components/login-view/login-view.scss":[function(require,module,exports) {
+var reloadCSS = require('_css_loader');
+
+module.hot.dispose(reloadCSS);
+module.hot.accept(reloadCSS);
+},{"_css_loader":"../../../../../../npm-global/lib/node_modules/parcel-bundler/src/builtins/css-loader.js"}],"components/login-view/login-view.jsx":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -44178,6 +44183,10 @@ exports.LoginView = LoginView;
 var _react = _interopRequireWildcard(require("react"));
 
 var _propTypes = _interopRequireDefault(require("prop-types"));
+
+var _reactBootstrap = require("react-bootstrap");
+
+require("./login-view.scss");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -44202,6 +44211,8 @@ function LoginView(props) {
       password = _useState4[0],
       setPassword = _useState4[1];
 
+  var getMainView = props.getMainView;
+
   var handleSubmit = function handleSubmit(e) {
     e.preventDefault();
     var user = {
@@ -44215,34 +44226,56 @@ function LoginView(props) {
     props.onLoggedIn(user.username);
   };
 
-  return _react.default.createElement("div", null, "Login", _react.default.createElement("form", {
+  return _react.default.createElement(_reactBootstrap.Container, {
+    fluid: true,
+    className: "container-fill"
+  }, _react.default.createElement(_reactBootstrap.Row, {
+    className: "login__row"
+  }, _react.default.createElement(_reactBootstrap.Col, {
+    className: "login__col hide-sm",
+    sm: 0,
+    md: 5
+  }, _react.default.createElement("div", {
+    className: "login__image"
+  })), _react.default.createElement(_reactBootstrap.Col, {
+    className: "login__col",
+    md: 7
+  }, _react.default.createElement("div", {
+    className: "login__ui"
+  }, _react.default.createElement("div", {
+    className: "login__head"
+  }, _react.default.createElement("h1", null, "Sign In"), _react.default.createElement("p", null, "Sign in to continue to theFLIXdb.")), _react.default.createElement("div", {
+    className: "login__form"
+  }, _react.default.createElement(_reactBootstrap.Form, {
     onSubmit: handleSubmit
-  }, _react.default.createElement("label", {
-    htmlFor: "username"
-  }, "Username:", _react.default.createElement("input", {
-    type: "text",
-    name: "username",
+  }, _react.default.createElement(_reactBootstrap.Form.Control, {
+    type: "username",
+    placeholder: "Username",
     value: username,
     onChange: function onChange(e) {
       return setUsername(e.target.value);
-    }
-  })), _react.default.createElement("label", {
-    htmlFor: "password"
-  }, "Password:", _react.default.createElement("input", {
-    type: "text",
-    name: "password",
+    },
+    className: "form-input"
+  }), _react.default.createElement(_reactBootstrap.Form.Control, {
+    type: "password",
+    placeholder: "Password",
     value: password,
     onChange: function onChange(e) {
       return setPassword(e.target.value);
-    }
-  })), _react.default.createElement("button", {
-    type: "submit"
-  }, "Submit")), _react.default.createElement("button", {
+    },
+    className: "form-input"
+  }), _react.default.createElement(_reactBootstrap.Button, {
+    variant: "primary",
+    type: "submit",
+    block: true,
+    className: "form-button"
+  }, "Submit")), _react.default.createElement(_reactBootstrap.Button, {
+    variant: "danger",
     type: "button",
-    onClick: function onClick() {
-      return props.getMainView();
-    }
-  }, "Cancel"));
+    block: true,
+    className: "form-button",
+    onClick: getMainView
+  }, "Cancel"))))));
 } // Define Proptypes
 
 
@@ -44250,7 +44283,12 @@ LoginView.propTypes = {
   onLoggedIn: _propTypes.default.func.isRequired,
   getMainView: _propTypes.default.func.isRequired
 };
-},{"react":"../../node_modules/react/index.js","prop-types":"../../node_modules/prop-types/index.js"}],"components/register-view/register-view.jsx":[function(require,module,exports) {
+},{"react":"../../node_modules/react/index.js","prop-types":"../../node_modules/prop-types/index.js","react-bootstrap":"../../node_modules/react-bootstrap/es/index.js","./login-view.scss":"components/login-view/login-view.scss"}],"components/register-view/register-view.scss":[function(require,module,exports) {
+var reloadCSS = require('_css_loader');
+
+module.hot.dispose(reloadCSS);
+module.hot.accept(reloadCSS);
+},{"_css_loader":"../../../../../../npm-global/lib/node_modules/parcel-bundler/src/builtins/css-loader.js"}],"components/register-view/register-view.jsx":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -44261,6 +44299,10 @@ exports.RegisterView = RegisterView;
 var _react = _interopRequireWildcard(require("react"));
 
 var _propTypes = _interopRequireDefault(require("prop-types"));
+
+var _reactBootstrap = require("react-bootstrap");
+
+require("./register-view.scss");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -44298,34 +44340,58 @@ function RegisterView(props) {
     props.onLoggedIn(user.username);
   };
 
-  return _react.default.createElement("div", null, "Register", _react.default.createElement("form", {
+  return _react.default.createElement(_reactBootstrap.Container, {
+    fluid: true,
+    className: "container-fill"
+  }, _react.default.createElement(_reactBootstrap.Row, {
+    className: "register__row"
+  }, _react.default.createElement(_reactBootstrap.Col, {
+    className: "register__col hide-sm",
+    sm: 0,
+    md: 5
+  }, _react.default.createElement("div", {
+    className: "register__image"
+  })), _react.default.createElement(_reactBootstrap.Col, {
+    className: "register__col",
+    md: 7
+  }, _react.default.createElement("div", {
+    className: "register__ui"
+  }, _react.default.createElement("div", {
+    className: "register__head"
+  }, _react.default.createElement("h1", null, "Sign Up"), _react.default.createElement("p", null, "Sign up to use some great features on theFLIXdb.")), _react.default.createElement("div", {
+    className: "register__form"
+  }, _react.default.createElement(_reactBootstrap.Form, {
     onSubmit: handleSubmit
-  }, _react.default.createElement("label", {
-    htmlFor: "username"
-  }, "Username:", _react.default.createElement("input", {
-    type: "text",
-    name: "username",
+  }, _react.default.createElement(_reactBootstrap.Form.Control, {
+    type: "username",
+    placeholder: "Username",
     value: username,
     onChange: function onChange(e) {
       return setUsername(e.target.value);
-    }
-  })), _react.default.createElement("label", {
-    htmlFor: "password"
-  }, "Password:", _react.default.createElement("input", {
-    type: "text",
-    name: "password",
+    },
+    className: "form-input"
+  }), _react.default.createElement(_reactBootstrap.Form.Control, {
+    type: "password",
+    placeholder: "Password",
     value: password,
     onChange: function onChange(e) {
       return setPassword(e.target.value);
-    }
-  })), _react.default.createElement("button", {
-    type: "submit"
-  }, "Submit")), _react.default.createElement("button", {
+    },
+    className: "form-input"
+  }), _react.default.createElement(_reactBootstrap.Button, {
+    variant: "primary",
+    type: "submit",
+    block: true,
+    className: "form-button"
+  }, "Submit")), _react.default.createElement(_reactBootstrap.Button, {
+    variant: "danger",
     type: "button",
+    block: true,
+    className: "form-button",
     onClick: function onClick() {
       return props.getMainView();
     }
-  }, "Cancel"));
+  }, "Cancel"))))));
 } // Define Proptypes
 
 
@@ -44333,7 +44399,7 @@ RegisterView.propTypes = {
   onLoggedIn: _propTypes.default.func.isRequired,
   getMainView: _propTypes.default.func.isRequired
 };
-},{"react":"../../node_modules/react/index.js","prop-types":"../../node_modules/prop-types/index.js"}],"components/header-view/header-view.scss":[function(require,module,exports) {
+},{"react":"../../node_modules/react/index.js","prop-types":"../../node_modules/prop-types/index.js","react-bootstrap":"../../node_modules/react-bootstrap/es/index.js","./register-view.scss":"components/register-view/register-view.scss"}],"components/header-view/header-view.scss":[function(require,module,exports) {
 var reloadCSS = require('_css_loader');
 
 module.hot.dispose(reloadCSS);
@@ -44360,47 +44426,30 @@ function HeaderView(props) {
   var getMainView = props.getMainView,
       getRegisterView = props.getRegisterView,
       getLoginView = props.getLoginView;
-  return (// <div className="header">
-    //   <button type="button" onClick={() => getMainView()}>
-    //     Home
-    //   </button>
-    //   <button type="button" onClick={() => getRegisterView()}>
-    //     Register
-    //   </button>
-    //   <button type="button" onClick={() => getLoginView()}>
-    //     Login
-    //   </button>
-    // </div>
-    _react.default.createElement("div", {
-      className: "header"
-    }, _react.default.createElement(_reactBootstrap.Container, null, _react.default.createElement(_reactBootstrap.Navbar, {
-      variant: "dark",
-      expand: "md"
-    }, _react.default.createElement(_reactBootstrap.Navbar.Brand, {
-      href: "#home",
-      onClick: function onClick() {
-        return getMainView();
-      }
-    }, "theFLIXdb"), _react.default.createElement(_reactBootstrap.Navbar.Toggle, {
-      "aria-controls": "basic-navbar-nav"
-    }), _react.default.createElement(_reactBootstrap.Navbar.Collapse, {
-      id: "basic-navbar-nav"
-    }, _react.default.createElement(_reactBootstrap.Nav, {
-      className: "mr-auto"
-    }, _react.default.createElement(_reactBootstrap.Nav.Link, {
-      onClick: function onClick() {
-        return getMainView();
-      }
-    }, "Home"), _react.default.createElement(_reactBootstrap.Nav.Link, {
-      onClick: function onClick() {
-        return getRegisterView();
-      }
-    }, "Register"), _react.default.createElement(_reactBootstrap.Nav.Link, {
-      onClick: function onClick() {
-        return getLoginView();
-      }
-    }, "Login"))))))
-  );
+  return _react.default.createElement("div", {
+    className: "header"
+  }, _react.default.createElement(_reactBootstrap.Container, null, _react.default.createElement(_reactBootstrap.Navbar, {
+    variant: "dark",
+    expand: "md"
+  }, _react.default.createElement(_reactBootstrap.Navbar.Brand, {
+    href: "#home",
+    onClick: function onClick() {
+      return getMainView();
+    }
+  }, "theFLIXdb"), _react.default.createElement(_reactBootstrap.Navbar.Toggle, {
+    "aria-controls": "basic-navbar-nav"
+  }), _react.default.createElement(_reactBootstrap.Navbar.Collapse, {
+    id: "basic-navbar-nav",
+    className: "justify-content-end"
+  }, _react.default.createElement(_reactBootstrap.Nav, null, _react.default.createElement(_reactBootstrap.Nav.Link, {
+    onClick: function onClick() {
+      return getRegisterView();
+    }
+  }, "Sign Up"), _react.default.createElement(_reactBootstrap.Nav.Link, {
+    onClick: function onClick() {
+      return getLoginView();
+    }
+  }, "Log In"))))));
 }
 
 HeaderView.propTypes = {
