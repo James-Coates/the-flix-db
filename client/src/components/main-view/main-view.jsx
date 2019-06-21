@@ -27,14 +27,13 @@ export class MainView extends React.Component {
   }
 
   componentDidMount() {
-    axios
-      .get(apiUrl + '/movies')
-      .then(response => {
-        this.setState({
-          movies: response.data,
-        });
-      })
-      .catch(err => console.log(err));
+    let accessToken = localStorage.getItem('token');
+    if (accessToken !== null) {
+      this.setState({
+        user: localStorage.getItem('user')
+      });
+      this.getMovies(accessToken);
+    }
   }
 
   onMovieClick(movie) {
@@ -91,7 +90,7 @@ export class MainView extends React.Component {
     const { movies, selectedMovie, user, loginUser, registerUser } = this.state;
 
     // Check if user logged in or if login selected
-    if (!user && loginUser)
+    if (!user)
       return <LoginView onLoggedIn={user => this.onLoggedIn(user)} getMainView={() => this.getMainView()} />;
 
     // Check if user logged in or if register selected
@@ -107,6 +106,7 @@ export class MainView extends React.Component {
           getRegisterView={() => this.getRegisterView()}
           getLoginView={() => this.getLoginView()}
         />
+        
         {selectedMovie ? (
           <MovieView movie={selectedMovie} getMainView={() => this.getMainView()} />
         ) : (
