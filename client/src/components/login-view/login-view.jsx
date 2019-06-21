@@ -1,6 +1,7 @@
 /* eslint-disable no-console */
 /* eslint-disable jsx-a11y/label-has-for */
 import React, { useState } from 'react';
+import axios from 'axios';
 import PropTypes from 'prop-types';
 import { Container, Row, Col, Form, Button } from 'react-bootstrap';
 import './login-view.scss';
@@ -15,9 +16,16 @@ export function LoginView(props) {
     e.preventDefault();
     const user = { username, password };
     console.log(user); // #TEST check if user details parsed
-    // #TODO Send a request to the server for authentication
-    // #TODO Then call props.onLoggedIn(username)
-    props.onLoggedIn(user.username);
+    // Send a request to the server for authentication
+    axios.post('https://theflixdb.herokuapp.com/login', {
+      username,
+      password
+    })
+    .then(response => {
+      const data = response.data;
+      props.onLoggedIn(user.username);
+    })
+    .catch(e => console.log('No such user'));
   };
 
   return (

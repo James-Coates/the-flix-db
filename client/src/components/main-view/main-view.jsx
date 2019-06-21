@@ -11,6 +11,8 @@ import { RegisterView } from '../register-view/register-view';
 import { HeaderView } from '../header-view/header-view';
 import './main-view.scss';
 
+const apiUrl = 'https://theflixdb.herokuapp.com'
+
 export class MainView extends React.Component {
   constructor() {
     // Call and initialise superclass constructor
@@ -26,7 +28,7 @@ export class MainView extends React.Component {
 
   componentDidMount() {
     axios
-      .get('https://theflixdb.herokuapp.com/movies')
+      .get(apiUrl + '/movies')
       .then(response => {
         this.setState({
           movies: response.data,
@@ -41,10 +43,28 @@ export class MainView extends React.Component {
     });
   }
 
-  onLoggedIn(user) {
+  onLoggedIn(authData) {
+    console.log(authData);
     this.setState({
-      user,
+      user: authData.user.username,
     });
+
+    // Store auth token in browser
+    localStorage.setItem('token', authData.token);
+    localStorage.setItem('user', authData.user.username);
+    this.getMovies(authData.token);
+  }
+
+  getMovies(token) {
+    axios.get(apiUrl + '/movies', {
+      headers: { Authorization: `Bearer ${token}` }
+    })
+    .then(response => {
+      this.setState({
+        movies: response.data
+      })
+    })
+    .catch(err => console.log(err));
   }
 
   getMainView() {
