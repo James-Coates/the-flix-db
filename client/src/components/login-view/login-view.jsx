@@ -37,8 +37,8 @@ export function LoginView(props) {
         <Col className="login__col" md={7}>
           <div className="login__ui">
             <div className="login__head">
-              <h1>Sign In</h1>
-              <p>Sign in to continue to theFLIXdb.</p>
+              <h1>Log In</h1>
+              <p>Log in to continue to theFLIXdb.</p>
             </div>
             <div className="login__form">
               <Form onSubmit={handleSubmit}>
