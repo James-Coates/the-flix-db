@@ -10,7 +10,7 @@ export function HeaderView(props) {
     <div className="header">
       <Container>
         <Navbar variant="dark" expand="md">
-          <Navbar.Brand href="#home" onClick={() => getMainView()}>
+          <Navbar.Brand href="#" onClick={() => getMainView()}>
             theFLIXdb
           </Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />

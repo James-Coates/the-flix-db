@@ -19,7 +19,7 @@ export class MainView extends React.Component {
     super();
     this.state = {
       movies: null,
-      selectedMovie: null,
+      selectedMovieId: null,
       user: null,
       loginUser: null,
       registerUser: null,
@@ -27,6 +27,10 @@ export class MainView extends React.Component {
   }
 
   componentDidMount() {
+    window.addEventListener('hashchange', this.handleNewHash, false);
+    this.handleNewHash();
+
+    // Access token
     let accessToken = localStorage.getItem('token');
     if (accessToken !== null) {
       this.setState({
@@ -36,9 +40,18 @@ export class MainView extends React.Component {
     }
   }
 
-  onMovieClick(movie) {
+  handleNewHash = () => {
+    const movieId = window.location.hash.replace(/^#\/?|\/$/g, '').split('/');
     this.setState({
-      selectedMovie: movie,
+      selectedMovieId: movieId[0]
+    });
+  }
+
+  onMovieClick(movie) {
+    // Change hash with movie id
+    window.location.hash = '#' + movie._id;
+    this.setState({
+      selectedMovieId: movie._id,
     });
   }
 
@@ -92,18 +105,18 @@ export class MainView extends React.Component {
   }
 
   render() {
-    const { movies, selectedMovie, user, loginUser, registerUser } = this.state;
+    const { movies, selectedMovieId, user, loginUser, registerUser } = this.state;
 
-    // Check if user logged in or if login selected
+    // Check if user logged in and if login selected
     if (!user && loginUser)
       return <LoginView onLoggedIn={user => this.onLoggedIn(user)} getMainView={() => this.getMainView()} />;
 
-    // Check if user logged in or if register selected
+    // Check if user logged in and if register selected
     if (!user && registerUser)
       return <RegisterView onLoggedIn={user => this.onLoggedIn(user)} getMainView={() => this.getMainView()} />;
 
-    // // Before movies are loaded
-    // if (!movies) return <div className="main-view" />;
+    const selectedMovie = selectedMovieId && movies ? movies.find(m => m._id === selectedMovieId) : null;
+
     return (
       <div className="main-view">
         <HeaderView
@@ -112,7 +125,7 @@ export class MainView extends React.Component {
           getLoginView={() => this.getLoginView()}
         />
         
-        {selectedMovie ? (
+        {selectedMovieId ? (
           <MovieView movie={selectedMovie} getMainView={() => this.getMainView()} />
         ) : (
           <Container>
