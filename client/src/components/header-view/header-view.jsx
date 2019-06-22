@@ -1,18 +1,21 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Navbar, Nav, Container } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
 import './header-view.scss';
 
 export function HeaderView(props) {
-  const { getMainView, getRegisterView, getLoginView } = props;
+  const { getRegisterView, getLoginView } = props;
 
   return (
     <div className="header">
       <Container>
         <Navbar variant="dark" expand="md">
-          <Navbar.Brand href="#" onClick={() => getMainView()}>
-            theFLIXdb
-          </Navbar.Brand>
+          <Link to={'/'}>
+            <Navbar.Brand>
+              theFLIXdb
+            </Navbar.Brand>
+          </Link>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav" className="justify-content-end">
             <Nav>
