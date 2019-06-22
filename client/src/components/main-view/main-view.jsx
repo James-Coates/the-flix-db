@@ -2,6 +2,7 @@
 /* eslint-disable no-console */
 import React from 'react';
 import axios from 'axios';
+import {BrowserRouter as Router, Route} from 'react-router-dom';
 // Import components
 import { Container, Row } from 'react-bootstrap';
 import { MovieCard } from '../movie-card/movie-card';
@@ -9,6 +10,8 @@ import { MovieView } from '../movie-view/movie-view';
 import { LoginView } from '../login-view/login-view';
 import { RegisterView } from '../register-view/register-view';
 import { HeaderView } from '../header-view/header-view';
+import { GenreView } from '../genre-view/genre-view';
+import { DirectorView } from '../director-view/director-view';
 import './main-view.scss';
 
 const apiUrl = 'https://theflixdb.herokuapp.com'
@@ -27,9 +30,6 @@ export class MainView extends React.Component {
   }
 
   componentDidMount() {
-    window.addEventListener('hashchange', this.handleNewHash, false);
-    this.handleNewHash();
-
     // Access token
     let accessToken = localStorage.getItem('token');
     if (accessToken !== null) {
@@ -38,21 +38,6 @@ export class MainView extends React.Component {
       });
       this.getMovies(accessToken);
     }
-  }
-
-  handleNewHash = () => {
-    const movieId = window.location.hash.replace(/^#\/?|\/$/g, '').split('/');
-    this.setState({
-      selectedMovieId: movieId[0]
-    });
-  }
-
-  onMovieClick(movie) {
-    // Change hash with movie id
-    window.location.hash = '#' + movie._id;
-    this.setState({
-      selectedMovieId: movie._id,
-    });
   }
 
   onLoggedIn(authData) {
@@ -108,37 +93,53 @@ export class MainView extends React.Component {
     const { movies, selectedMovieId, user, loginUser, registerUser } = this.state;
 
     // Check if user logged in and if login selected
-    if (!user && loginUser)
+    if (!user)
       return <LoginView onLoggedIn={user => this.onLoggedIn(user)} getMainView={() => this.getMainView()} />;
 
     // Check if user logged in and if register selected
     if (!user && registerUser)
       return <RegisterView onLoggedIn={user => this.onLoggedIn(user)} getMainView={() => this.getMainView()} />;
 
-    const selectedMovie = selectedMovieId && movies ? movies.find(m => m._id === selectedMovieId) : null;
+    if (!movies) return <div className="main-view"/>;
 
     return (
-      <div className="main-view">
+
+      <Router>
+        <div className="main-view">
+
         <HeaderView
           getMainView={() => this.getMainView()}
           getRegisterView={() => this.getRegisterView()}
           getLoginView={() => this.getLoginView()}
         />
-        
-        {selectedMovieId ? (
-          <MovieView movie={selectedMovie} getMainView={() => this.getMainView()} />
-        ) : (
+
+        <Route exact path="/" render={() => (
           <Container>
             <Row>
               {movies ? (movies.map(movie => (
-                <MovieCard key={movie._id} movie={movie} onClick={movie => this.onMovieClick(movie)} />
+                <MovieCard key={movie._id} movie={movie} />
               ))) : (
                 <div className="container-fill no-login-text">Please Log in</div>
               )}
             </Row>
           </Container>
-        )}
-      </div>
+        )}/>
+
+        <Route path="/movies/:movieId" render={
+          ({match}) => <MovieView movie={movies.find(m => m._id === match.params.movieId)}/>}
+        />
+        </div>
+
+        <Route path="/genres/:name" render={({match}) => {
+          return <GenreView genre={movies.find(m => m.genre.name === match.params.name).genre}/>
+        }}
+        />
+
+        <Route path="/directors/:name" render={({match}) => {
+          return <DirectorView director={movies.find(m => m.director.name === match.params.name).director}/>
+        }}
+        />
+      </Router>
     );
   }
 }
