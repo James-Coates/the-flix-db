@@ -86,19 +86,24 @@ export class MainView extends React.Component {
     });
   }
 
+  logout() {
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+  }
+
   render() {
     const { movies, selectedMovie, user, loginUser, registerUser } = this.state;
 
     // Check if user logged in or if login selected
-    if (!user)
+    if (!user && loginUser)
       return <LoginView onLoggedIn={user => this.onLoggedIn(user)} getMainView={() => this.getMainView()} />;
 
     // Check if user logged in or if register selected
     if (!user && registerUser)
       return <RegisterView onLoggedIn={user => this.onLoggedIn(user)} getMainView={() => this.getMainView()} />;
 
-    // Before movies are loaded
-    if (!movies) return <div className="main-view" />;
+    // // Before movies are loaded
+    // if (!movies) return <div className="main-view" />;
     return (
       <div className="main-view">
         <HeaderView
@@ -112,9 +117,11 @@ export class MainView extends React.Component {
         ) : (
           <Container>
             <Row>
-              {movies.map(movie => (
+              {movies ? (movies.map(movie => (
                 <MovieCard key={movie._id} movie={movie} onClick={movie => this.onMovieClick(movie)} />
-              ))}
+              ))) : (
+                <div className="container-fill no-login-text">Please Log in</div>
+              )}
             </Row>
           </Container>
         )}
