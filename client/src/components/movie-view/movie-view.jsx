@@ -2,6 +2,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Jumbotron, Container, Row, Col } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
 import './movie-view.scss';
 
 export class MovieView extends React.Component {
@@ -50,11 +51,15 @@ export class MovieView extends React.Component {
               <div className="movie-desc__holder">
                 <div className="movie-desc">
                   <div className="movie-desc__label">Genre:</div>
-                  <div className="movie-desc__value">{movie.genre.name}</div>
+                  <Link to={`/genres/${movie.genre.name}`}>
+                    <div className="movie-desc__value">{movie.genre.name}</div>
+                  </Link>
                 </div>
                 <div className="movie-desc">
                   <div className="movie-desc__label">Director:</div>
-                  <div className="movie-desc__value">{movie.director.name}</div>
+                  <Link to={`/directors/${movie.director.name}`}>
+                    <div className="movie-desc__value">{movie.director.name}</div>
+                  </Link>
                 </div>
               </div>
             </Col>
