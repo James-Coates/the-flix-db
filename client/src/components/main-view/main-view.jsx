@@ -86,6 +86,7 @@ export class MainView extends React.Component {
   logout() {
     localStorage.removeItem('token');
     localStorage.removeItem('user');
+    document.location.reload();
   }
 
   render() {
@@ -110,6 +111,7 @@ export class MainView extends React.Component {
           getRegisterView={() => this.getRegisterView()}
           getLoginView={() => this.getLoginView()}
           user={user}
+          logout={() => this.logout()}
         />
 
         <Route exact path="/" render={() => (
@@ -130,11 +132,13 @@ export class MainView extends React.Component {
         </div>
 
         <Route path="/genres/:name" render={({match}) => {
+          if (!movies.length) return <div className="main-view" />
           return <GenreView genre={movies.find(m => m.genre.name === match.params.name).genre}/>
         }}
         />
 
         <Route path="/directors/:name" render={({match}) => {
+          if (!movies.length) return <div className="main-view" />
           return <DirectorView director={movies.find(m => m.director.name === match.params.name).director}/>
         }}
         />
