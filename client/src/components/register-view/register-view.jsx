@@ -3,17 +3,32 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { Container, Row, Col, Form, Button } from 'react-bootstrap';
 import './register-view.scss';
+import axios from 'axios';
 
 export function RegisterView(props) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [email, setEmail] = useState('');
+  const [birthday, setBirthday] = useState('');
 
-  const handleSubmit = e => {
+  const handleRegister = e => {
     e.preventDefault();
     const user = { username, password };
-    console.log(user); // #TEST check if user details parsed
-    // #TODO Send a request to the server to add user
-    // #TODO Then call props.onLoggedIn(username)
+    
+    axios.post('https://theflixdb.herokuapp.com/users', {
+      username,
+      password,
+      email,
+      birthday
+    })
+    .then(response => {
+      const data = response.data;
+      console.log(data);
+      window.open('/');
+    })
+    .catch(e => console.log('Error registering user'));
+
+
     props.onLoggedIn(user.username);
   };
 
@@ -30,12 +45,26 @@ export function RegisterView(props) {
               <p>Sign up to use some great features on theFLIXdb.</p>
             </div>
             <div className="register__form">
-              <Form onSubmit={handleSubmit}>
+              <Form onSubmit={handleRegister}>
                 <Form.Control
                   type="username"
                   placeholder="Username"
                   value={username}
                   onChange={e => setUsername(e.target.value)}
+                  className="form-input"
+                />
+                <Form.Control
+                  type="email"
+                  placeholder="Email"
+                  value={email}
+                  onChange={e => setEmail(e.target.value)}
+                  className="form-input"
+                />
+                <Form.Control
+                  type="date"
+                  placeholder="Birthday"
+                  value={birthday}
+                  onChange={e => setBirthday(e.target.value)}
                   className="form-input"
                 />
                 <Form.Control
