@@ -84,6 +84,33 @@ export class MainView extends React.Component {
     });
   }
 
+  addToFavourites(movieId) {
+    console.log(movieId)
+    const username = localStorage.user
+    const token = localStorage.token
+    axios.post(`${apiUrl}/users/${username}/movies/${movieId}`, {
+    }, {
+      headers: { Authorization: `Bearer ${token}` }
+    })
+    .then(response => {
+      console.log(`${movieId} added to favourites`)
+    })
+    .catch(err => console.log('Can\'t add movie'));
+  }
+
+  deleteFavouriteMovie(movieId) {
+    console.log(movieId)
+    const username = localStorage.user
+    const token = localStorage.token
+    axios.delete(`${apiUrl}/users/${username}/movies/${movieId}`, {
+      headers: { Authorization: `Bearer ${token}` }
+    })
+    .then(response => {
+      console.log(`${movieId} deleted to favourites`)
+    })
+    .catch(err => console.log('Can\'t delete movie'));
+  }
+
   logout() {
     localStorage.removeItem('token');
     localStorage.removeItem('user');
@@ -119,7 +146,12 @@ export class MainView extends React.Component {
           <Container>
             <Row>
               {movies && movies.length ? (movies.map(movie => (
-                <MovieCard key={movie._id} movie={movie} />
+                <MovieCard 
+                  key={movie._id} 
+                  movie={movie} 
+                  addToFavourites={(movieId) => this.addToFavourites(movieId)} 
+                  deleteFavouriteMovie={(movieId) => this.deleteFavouriteMovie(movieId)} 
+                  />
               ))) : (
                 <div className="container-fill no-login-text">Please Sign Up or Log in</div>
               )}
@@ -146,7 +178,11 @@ export class MainView extends React.Component {
 
         <Route path="/users/:username" render={() => {
           if (!movies.length) return <div className="main-view" />
-          return <ProfileView username={localStorage.user}/>
+          return <ProfileView 
+            user={localStorage.user} 
+            movies={movies} 
+            addToFavourites={(movieId) => this.addToFavourites(movieId)} 
+            deleteFavouriteMovie={(movieId) => this.deleteFavouriteMovie(movieId)}/>
         }}
         />
       </Router>
