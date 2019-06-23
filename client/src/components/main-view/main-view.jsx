@@ -21,8 +21,7 @@ export class MainView extends React.Component {
     // Call and initialise superclass constructor
     super();
     this.state = {
-      movies: null,
-      selectedMovieId: null,
+      movies: [],
       user: null,
       loginUser: null,
       registerUser: null,
@@ -90,17 +89,17 @@ export class MainView extends React.Component {
   }
 
   render() {
-    const { movies, selectedMovieId, user, loginUser, registerUser } = this.state;
+    const { movies, user, loginUser, registerUser } = this.state;
 
     // Check if user logged in and if login selected
-    if (!user)
+    if (!user && loginUser)
       return <LoginView onLoggedIn={user => this.onLoggedIn(user)} getMainView={() => this.getMainView()} />;
 
     // Check if user logged in and if register selected
     if (!user && registerUser)
       return <RegisterView onLoggedIn={user => this.onLoggedIn(user)} getMainView={() => this.getMainView()} />;
 
-    if (!movies) return <div className="main-view"/>;
+    // if (!movies) return <div className="main-view"/>;
 
     return (
 
@@ -108,18 +107,18 @@ export class MainView extends React.Component {
         <div className="main-view">
 
         <HeaderView
-          getMainView={() => this.getMainView()}
           getRegisterView={() => this.getRegisterView()}
           getLoginView={() => this.getLoginView()}
+          user={user}
         />
 
         <Route exact path="/" render={() => (
           <Container>
             <Row>
-              {movies ? (movies.map(movie => (
+              {movies && movies.length ? (movies.map(movie => (
                 <MovieCard key={movie._id} movie={movie} />
               ))) : (
-                <div className="container-fill no-login-text">Please Log in</div>
+                <div className="container-fill no-login-text">Please Sign Up or Log in</div>
               )}
             </Row>
           </Container>
