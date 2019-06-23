@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Container, Row, Col } from 'react-bootstrap';
+import { Container } from 'react-bootstrap';
 
 export function DirectorView( {director} ) {
 
@@ -14,4 +14,11 @@ export function DirectorView( {director} ) {
       </Container>
     </div>
   );
+}
+
+DirectorView.propTypes = {
+  director: PropTypes.shape({
+    name: PropTypes.string,
+    bio: PropTypes.string
+  })
 }

@@ -12,3 +12,10 @@ export function GenreView({genre}) {
     </div>
   );
 }
+
+GenreView.propTypes = {
+  genre: PropTypes.shape({
+    name: PropTypes.string,
+    description: PropTypes.string
+  })
+}
