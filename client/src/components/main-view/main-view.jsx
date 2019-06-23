@@ -12,6 +12,7 @@ import { RegisterView } from '../register-view/register-view';
 import { HeaderView } from '../header-view/header-view';
 import { GenreView } from '../genre-view/genre-view';
 import { DirectorView } from '../director-view/director-view';
+import { ProfileView } from '../profile-view/profile-view';
 import './main-view.scss';
 
 const apiUrl = 'https://theflixdb.herokuapp.com'
@@ -52,7 +53,7 @@ export class MainView extends React.Component {
   }
 
   getMovies(token) {
-    axios.get(apiUrl + '/movies', {
+    axios.get(`${apiUrl}/movies`, {
       headers: { Authorization: `Bearer ${token}` }
     })
     .then(response => {
@@ -62,6 +63,24 @@ export class MainView extends React.Component {
     })
     .catch(err => console.log(err));
   }
+
+  // getUsers(username) {
+  //   return axios.get(`${apiUrl}/users`)
+  //   .then(response => {
+  //     console.log(response);
+  //     console.log(response.data.find(u => u.username === username));
+  //     return response.data.find(u => u.username === username);
+  //   })
+  //   .catch(err => console.log('Can\'t get users'));
+  // }
+
+  // findUser(username) {
+  //   this.getUsers()
+  //   .then()
+  //   .catch('Cant find user')
+  //   console.log(users);
+  //   users.find(u => u.username === username);
+  // }
 
   getMainView() {
     this.setState({
@@ -140,6 +159,12 @@ export class MainView extends React.Component {
         <Route path="/directors/:name" render={({match}) => {
           if (!movies.length) return <div className="main-view" />
           return <DirectorView director={movies.find(m => m.director.name === match.params.name).director}/>
+        }}
+        />
+
+        <Route path="/users/:username" render={() => {
+          if (!movies.length) return <div className="main-view" />
+          return <ProfileView username={localStorage.user}/>
         }}
         />
       </Router>
