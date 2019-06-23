@@ -13,7 +13,6 @@ export function RegisterView(props) {
 
   const handleRegister = e => {
     e.preventDefault();
-    const user = { username, password };
     
     axios.post('https://theflixdb.herokuapp.com/users', {
       username,
@@ -23,14 +22,22 @@ export function RegisterView(props) {
     })
     .then(response => {
       const data = response.data;
-      console.log(data);
-      window.open('/');
+      handleLogin({username, password})
     })
     .catch(e => console.log('Error registering user'));
-
-
-    props.onLoggedIn(user.username);
   };
+
+  const handleLogin = user => {
+    axios.post('https://theflixdb.herokuapp.com/login', {
+        username: user.username,
+        password: user.password
+      })
+      .then(response => {
+        const data = response.data;
+        props.onLoggedIn(data);
+      })
+      .catch(e => console.log('No such user'));
+    };
 
   return (
     <Container fluid className="container-fill">
