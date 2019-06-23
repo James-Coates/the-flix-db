@@ -64,24 +64,6 @@ export class MainView extends React.Component {
     .catch(err => console.log(err));
   }
 
-  // getUsers(username) {
-  //   return axios.get(`${apiUrl}/users`)
-  //   .then(response => {
-  //     console.log(response);
-  //     console.log(response.data.find(u => u.username === username));
-  //     return response.data.find(u => u.username === username);
-  //   })
-  //   .catch(err => console.log('Can\'t get users'));
-  // }
-
-  // findUser(username) {
-  //   this.getUsers()
-  //   .then()
-  //   .catch('Cant find user')
-  //   console.log(users);
-  //   users.find(u => u.username === username);
-  // }
-
   getMainView() {
     this.setState({
       selectedMovie: null,
