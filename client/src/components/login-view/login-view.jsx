@@ -15,7 +15,6 @@ export function LoginView(props) {
   const handleSubmit = e => {
     e.preventDefault();
     const user = { username, password };
-    console.log(user); // #TEST check if user details parsed
     // Send a request to the server for authentication
     axios.post('https://theflixdb.herokuapp.com/login', {
       username,
