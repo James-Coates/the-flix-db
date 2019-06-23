@@ -5,7 +5,8 @@ import { Link } from 'react-router-dom';
 import './header-view.scss';
 
 export function HeaderView(props) {
-  const { getRegisterView, getLoginView, user } = props;
+  const { getRegisterView, getLoginView, user, logout } = props;
+
 
   return (
     <div className="header">
@@ -26,6 +27,7 @@ export function HeaderView(props) {
             ) : (
               <Nav>
                 <Nav.Link>Welcome Back {user}</Nav.Link>
+                <Nav.Link onClick={() => logout()}>Log Out</Nav.Link>
               </Nav>
             )}
           </Navbar.Collapse>
