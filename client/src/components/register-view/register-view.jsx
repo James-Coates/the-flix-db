@@ -20,8 +20,7 @@ export function RegisterView(props) {
       email,
       birthday
     })
-    .then(response => {
-      const data = response.data;
+    .then(() => {
       handleLogin({username, password})
     })
     .catch(e => console.log('Error registering user'));
