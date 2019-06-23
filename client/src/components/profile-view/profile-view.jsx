@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Container, Row, Col, Form } from 'react-bootstrap';
+import { Container, Row, Col, Form, Button } from 'react-bootstrap';
 import Moment from 'react-moment';
 import moment from 'moment';
 import { MovieCard } from '../movie-card/movie-card';
@@ -29,6 +29,22 @@ export function ProfileView( props ) {
       })
       .catch(err => console.log('Can\'t get users'));
     }, [props.user])
+
+    const handleSubmit = e => {
+      e.preventDefault();
+      axios.put(`${apiUrl}/users/${localStorage.user}`, {
+        username,
+        email,
+        birthday
+      }, {
+        headers: { Authorization: `Bearer ${localStorage.token}` }
+      })
+      .then(response => {
+        localStorage.setItem('user', username);
+        document.location.reload();
+      })
+      .catch(e => console.log('Failed to update user'));
+    }
 
   return(
     <div className="profile-view">
@@ -75,20 +91,23 @@ export function ProfileView( props ) {
               />
             </div>
             </Col>
-              <div className="favourite-movies">
-                <h2>Favourite Movies:</h2>
-                <Row>
-                  {Array.from(favouriteMovies).map((movieId) => <MovieCard 
-                    key={movieId} 
-                    movie={movies.find(m => m._id === movieId)} 
-                    addToFavourites={(movieId) => addToFavourites(movieId)}
-                    deleteFavouriteMovie={(movieId) => deleteFavouriteMovie(movieId)}
-                    profileView = {true} 
-                    />)}
-                </Row>
-              </div>
+            <Col xs={12}>
+              <Button onClick={handleSubmit}>Submit</Button>
+            </Col>
           </Row>
         </Form>
+        <div className="favourite-movies">
+          <h2>Favourite Movies:</h2>
+          <Row>
+            {Array.from(favouriteMovies).map((movieId) => <MovieCard 
+              key={movieId} 
+              movie={movies.find(m => m._id === movieId)} 
+              addToFavourites={(movieId) => addToFavourites(movieId)}
+              deleteFavouriteMovie={(movieId) => deleteFavouriteMovie(movieId)}
+              profileView = {true} 
+              />)}
+          </Row>
+        </div>
       </Container>
     </div>
   )
