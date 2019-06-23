@@ -4,8 +4,6 @@ import { Container } from 'react-bootstrap';
 
 export function DirectorView( {director} ) {
 
-  console.log(director);
-
   return(
     <div className="director-view">
       <Container>
