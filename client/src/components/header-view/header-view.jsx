@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Navbar, Nav, Container } from 'react-bootstrap';
+import { Navbar, Nav, NavItem, Container } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import './header-view.scss';
 
@@ -26,7 +26,7 @@ export function HeaderView(props) {
               </Nav>
             ) : (
               <Nav>
-                <Nav.Link>Welcome Back {user}</Nav.Link>
+                <Link to={`/users/${user}`}><NavItem>Welcome Back {user}</NavItem></Link>
                 <Nav.Link onClick={() => logout()}>Log Out</Nav.Link>
               </Nav>
             )}

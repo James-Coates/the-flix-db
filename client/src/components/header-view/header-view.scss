@@ -4,6 +4,28 @@
   background: $color-primary;
 }
 
+.nav-item {
+  display: block;
+  padding: 0.5rem 1rem;
+}
+
 .navbar-dark .navbar-brand {
   color: $color-secondary;
+}
+
+.navbar-dark .navbar-nav a {
+  color: $text-on-s;
+
+  &:hover {
+    text-decoration: none;
+    color: $gray-med;
+  }
+}
+
+.navbar-dark .navbar-nav .nav-link {
+  color: $text-on-s;
+  &:hover {
+    text-decoration: none;
+    color: $gray-med;
+  }
 }
