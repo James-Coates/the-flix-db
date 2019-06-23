@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import './header-view.scss';
 
 export function HeaderView(props) {
-  const { getRegisterView, getLoginView } = props;
+  const { getRegisterView, getLoginView, user } = props;
 
   return (
     <div className="header">
@@ -18,10 +18,16 @@ export function HeaderView(props) {
           </Link>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav" className="justify-content-end">
-            <Nav>
-              <Nav.Link onClick={() => getRegisterView()}>Sign Up</Nav.Link>
-              <Nav.Link onClick={() => getLoginView()}>Log In</Nav.Link>
-            </Nav>
+            {!user ? (
+              <Nav>
+                <Nav.Link onClick={() => getRegisterView()}>Sign Up</Nav.Link>
+                <Nav.Link onClick={() => getLoginView()}>Log In</Nav.Link>
+              </Nav>
+            ) : (
+              <Nav>
+                <Nav.Link>Welcome Back {user}</Nav.Link>
+              </Nav>
+            )}
           </Navbar.Collapse>
         </Navbar>
       </Container>
@@ -30,7 +36,6 @@ export function HeaderView(props) {
 }
 
 HeaderView.propTypes = {
-  getMainView: PropTypes.func.isRequired,
   getRegisterView: PropTypes.func.isRequired,
   getLoginView: PropTypes.func.isRequired,
 };
