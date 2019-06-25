@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import './header-view.scss';
 
 export function HeaderView(props) {
-  const { getRegisterView, getLoginView, user, logout } = props;
+  const { logout } = props;
 
 
   return (
@@ -19,17 +19,21 @@ export function HeaderView(props) {
           </Link>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav" className="justify-content-end">
-            {!user ? (
+            {/* {!user ? ( */}
               <Nav>
-                <Nav.Link onClick={() => getRegisterView()}>Sign Up</Nav.Link>
-                <Nav.Link onClick={() => getLoginView()}>Log In</Nav.Link>
+                <Link to='/register'>
+                  <Nav.Item>Sign Up</Nav.Item>
+                </Link>
+                <Link to='/login'>
+                  <Nav.Item>Log In</Nav.Item>
+                </Link>
               </Nav>
-            ) : (
+            {/* ) : (
               <Nav>
                 <Link to={`/users/${user}`}><NavItem>Welcome Back {user}</NavItem></Link>
                 <Nav.Link onClick={() => logout()}>Log Out</Nav.Link>
               </Nav>
-            )}
+            )} */}
           </Navbar.Collapse>
         </Navbar>
       </Container>
