@@ -13,10 +13,10 @@ import { Container, Row } from 'react-bootstrap';
 import MovieView from '../movie-view/movie-view';
 import { LoginView } from '../login-view/login-view';
 import { RegisterView } from '../register-view/register-view';
-import { HeaderView } from '../header-view/header-view';
+import HeaderView from '../header-view/header-view';
 import { GenreView } from '../genre-view/genre-view';
 import { DirectorView } from '../director-view/director-view';
-import { ProfileView } from '../profile-view/profile-view';
+import ProfileView from '../profile-view/profile-view';
 import './main-view.scss';
 
 const apiUrl = 'https://theflixdb.herokuapp.com'
@@ -54,26 +54,6 @@ class MainView extends React.Component {
     .catch(err => console.log(err));
   }
 
-  // getMainView() {
-  //   this.setState({
-  //     selectedMovie: null,
-  //     loginUser: null,
-  //     registerUser: null,
-  //   });
-  // }
-
-  // getLoginView() {
-  //   this.setState({
-  //     loginUser: true,
-  //   });
-  // }
-
-  getRegisterView() {
-    this.setState({
-      registerUser: true,
-    });
-  }
-
   addToFavourites(movieId) {
     console.log(movieId)
     const username = localStorage.user
@@ -108,7 +88,7 @@ class MainView extends React.Component {
   }
 
   render() {
-
+    const {user} = this.props
     // Check if user logged in and if login selected
     // if (!user && loginUser)
     //   return <LoginView onLoggedIn={user => this.onLoggedIn(user)} getMainView={() => this.getMainView()} />;
@@ -131,15 +111,18 @@ class MainView extends React.Component {
         <Route exact path="/" render={() => {
           return (
             <Container>
-              <Row>
                 <MoviesList />
-              </Row>
             </Container>
           )
         }}/>
 
         <Route path="/login" render={() => {
           return <LoginView onLoggedIn={user => this.onLoggedIn(user)} />
+        }}
+        />
+
+        <Route path="/register" render={() => {
+          return <RegisterView onLoggedIn={user => this.onLoggedIn(user)} />
         }}
         />
 
@@ -170,4 +153,4 @@ class MainView extends React.Component {
   }
 }
 
-export default connect(null, { setMovies, setUser } )(MainView);
+export default connect(({user}) => ({user}), { setMovies, setUser } )(MainView);
