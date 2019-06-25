@@ -2,10 +2,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Navbar, Nav, NavItem, Container } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
 import './header-view.scss';
 
-export function HeaderView(props) {
-  const { logout } = props;
+function HeaderView(props) {
+  const { logout, user } = props;
 
 
   return (
@@ -19,7 +20,7 @@ export function HeaderView(props) {
           </Link>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav" className="justify-content-end">
-            {/* {!user ? ( */}
+            {!user ? (
               <Nav>
                 <Link to='/register'>
                   <Nav.Item>Sign Up</Nav.Item>
@@ -28,12 +29,12 @@ export function HeaderView(props) {
                   <Nav.Item>Log In</Nav.Item>
                 </Link>
               </Nav>
-            {/* ) : (
+            ) : (
               <Nav>
                 <Link to={`/users/${user}`}><NavItem>Welcome Back {user}</NavItem></Link>
                 <Nav.Link onClick={() => logout()}>Log Out</Nav.Link>
               </Nav>
-            )} */}
+            )}
           </Navbar.Collapse>
         </Navbar>
       </Container>
@@ -45,3 +46,5 @@ HeaderView.propTypes = {
   getRegisterView: PropTypes.func.isRequired,
   getLoginView: PropTypes.func.isRequired,
 };
+
+export default connect(({user}) => ({user}))(HeaderView);

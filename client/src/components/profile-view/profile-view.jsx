@@ -3,10 +3,16 @@ import axios from 'axios';
 import { Container, Row, Col, Form, Button } from 'react-bootstrap';
 import Moment from 'react-moment';
 import moment from 'moment';
+import { connect } from 'react-redux';
 import { MovieCard } from '../movie-card/movie-card';
 import './profile-view.scss';
 
-export function ProfileView( props ) {
+function ProfileView( props ) {
+
+  const { movies, user } = props;
+  // const  mapStateToProps = state => {
+  //   const { movies, user } = state;
+  // }
 
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
@@ -14,7 +20,7 @@ export function ProfileView( props ) {
   // const [edit, setEdit] = useState('');
   const [favouriteMovies, setFavouriteMovies] = useState('');
 
-  const {movies, addToFavourites, deleteFavouriteMovie} = props;
+  // const {movies, addToFavourites, deleteFavouriteMovie} = props;
   const apiUrl = 'https://theflixdb.herokuapp.com'
 
     // Load users on mount
@@ -102,8 +108,7 @@ export function ProfileView( props ) {
             {Array.from(favouriteMovies).map((movieId) => <MovieCard 
               key={movieId} 
               movie={movies.find(m => m._id === movieId)} 
-              addToFavourites={(movieId) => addToFavourites(movieId)}
-              deleteFavouriteMovie={(movieId) => deleteFavouriteMovie(movieId)}
+
               profileView = {true} 
               />)}
           </Row>
@@ -112,3 +117,5 @@ export function ProfileView( props ) {
     </div>
   )
 } 
+
+export default connect(({movies, user}) => ({movies, user}))(ProfileView);
