@@ -2,11 +2,15 @@
 /* eslint-disable no-console */
 import React from 'react';
 import axios from 'axios';
-import {BrowserRouter as Router, Route} from 'react-router-dom';
+import {BrowserRouter as Router, Route, Redirect} from 'react-router-dom';
+import { connect } from 'react-redux';
+
+import { setMovies, setUser } from '../../actions/actions';
+
 // Import components
+import MoviesList from '../movies-list/movies-list';
 import { Container, Row } from 'react-bootstrap';
-import { MovieCard } from '../movie-card/movie-card';
-import { MovieView } from '../movie-view/movie-view';
+import MovieView from '../movie-view/movie-view';
 import { LoginView } from '../login-view/login-view';
 import { RegisterView } from '../register-view/register-view';
 import { HeaderView } from '../header-view/header-view';
@@ -17,34 +21,21 @@ import './main-view.scss';
 
 const apiUrl = 'https://theflixdb.herokuapp.com'
 
-export class MainView extends React.Component {
-  constructor() {
-    // Call and initialise superclass constructor
-    super();
-    this.state = {
-      movies: [],
-      user: null,
-      loginUser: null,
-      registerUser: null,
-    };
-  }
+class MainView extends React.Component {
 
   componentDidMount() {
     // Access token
     let accessToken = localStorage.getItem('token');
     if (accessToken !== null) {
-      this.setState({
-        user: localStorage.getItem('user')
-      });
+      this.props.setUser(localStorage.getItem('user'));
+      console.log('component mounted');
       this.getMovies(accessToken);
     }
   }
 
   onLoggedIn(authData) {
     console.log(authData);
-    this.setState({
-      user: authData.user.username,
-    });
+    this.props.setUser(authData.user.username);
 
     // Store auth token in browser
     localStorage.setItem('token', authData.token);
@@ -57,26 +48,25 @@ export class MainView extends React.Component {
       headers: { Authorization: `Bearer ${token}` }
     })
     .then(response => {
-      this.setState({
-        movies: response.data
-      })
+      console.log(response.data);
+      this.props.setMovies(response.data);
     })
     .catch(err => console.log(err));
   }
 
-  getMainView() {
-    this.setState({
-      selectedMovie: null,
-      loginUser: null,
-      registerUser: null,
-    });
-  }
+  // getMainView() {
+  //   this.setState({
+  //     selectedMovie: null,
+  //     loginUser: null,
+  //     registerUser: null,
+  //   });
+  // }
 
-  getLoginView() {
-    this.setState({
-      loginUser: true,
-    });
-  }
+  // getLoginView() {
+  //   this.setState({
+  //     loginUser: true,
+  //   });
+  // }
 
   getRegisterView() {
     this.setState({
@@ -118,15 +108,14 @@ export class MainView extends React.Component {
   }
 
   render() {
-    const { movies, user, loginUser, registerUser } = this.state;
 
     // Check if user logged in and if login selected
-    if (!user && loginUser)
-      return <LoginView onLoggedIn={user => this.onLoggedIn(user)} getMainView={() => this.getMainView()} />;
+    // if (!user && loginUser)
+    //   return <LoginView onLoggedIn={user => this.onLoggedIn(user)} getMainView={() => this.getMainView()} />;
 
     // Check if user logged in and if register selected
-    if (!user && registerUser)
-      return <RegisterView onLoggedIn={user => this.onLoggedIn(user)} getMainView={() => this.getMainView()} />;
+    // if (!user && registerUser)
+    //   return <RegisterView onLoggedIn={user => this.onLoggedIn(user)} getMainView={() => this.getMainView()} />;
 
     // if (!movies) return <div className="main-view"/>;
 
@@ -134,53 +123,44 @@ export class MainView extends React.Component {
 
       <Router>
         <div className="main-view">
-
+        
         <HeaderView
-          getRegisterView={() => this.getRegisterView()}
-          getLoginView={() => this.getLoginView()}
-          user={user}
           logout={() => this.logout()}
         />
 
-        <Route exact path="/" render={() => (
-          <Container>
-            <Row>
-              {movies && movies.length ? (movies.map(movie => (
-                <MovieCard 
-                  key={movie._id} 
-                  movie={movie} 
-                  addToFavourites={(movieId) => this.addToFavourites(movieId)} 
-                  deleteFavouriteMovie={(movieId) => this.deleteFavouriteMovie(movieId)} 
-                  />
-              ))) : (
-                <div className="container-fill no-login-text">Please Sign Up or Log in</div>
-              )}
-            </Row>
-          </Container>
-        )}/>
+        <Route exact path="/" render={() => {
+          return (
+            <Container>
+              <Row>
+                <MoviesList />
+              </Row>
+            </Container>
+          )
+        }}/>
 
-        <Route path="/movies/:movieId" render={
-          ({match}) => <MovieView movie={movies.find(m => m._id === match.params.movieId)}/>}
+        <Route path="/login" render={() => {
+          return <LoginView onLoggedIn={user => this.onLoggedIn(user)} />
+        }}
         />
+
+        <Route path="/movies/:movieId" render={({match}) => {
+           return <MovieView movieId={ match.params.movieId }/>
+          }} />
         </div>
 
         <Route path="/genres/:name" render={({match}) => {
-          if (!movies.length) return <div className="main-view" />
-          return <GenreView genre={movies.find(m => m.genre.name === match.params.name).genre}/>
+          return <GenreView genreName={match.params.name}/>
         }}
         />
 
         <Route path="/directors/:name" render={({match}) => {
-          if (!movies.length) return <div className="main-view" />
-          return <DirectorView director={movies.find(m => m.director.name === match.params.name).director}/>
+          return <DirectorView directorName={match.params.name}/>
         }}
         />
 
         <Route path="/users/:username" render={() => {
-          if (!movies.length) return <div className="main-view" />
           return <ProfileView 
             user={localStorage.user} 
-            movies={movies} 
             addToFavourites={(movieId) => this.addToFavourites(movieId)} 
             deleteFavouriteMovie={(movieId) => this.deleteFavouriteMovie(movieId)}/>
         }}
@@ -189,3 +169,5 @@ export class MainView extends React.Component {
     );
   }
 }
+
+export default connect(null, { setMovies, setUser } )(MainView);
