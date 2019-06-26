@@ -14,8 +14,8 @@ import MovieView from '../movie-view/movie-view';
 import { LoginView } from '../login-view/login-view';
 import { RegisterView } from '../register-view/register-view';
 import HeaderView from '../header-view/header-view';
-import { GenreView } from '../genre-view/genre-view';
-import { DirectorView } from '../director-view/director-view';
+import GenreView from '../genre-view/genre-view';
+import DirectorView from '../director-view/director-view';
 import ProfileView from '../profile-view/profile-view';
 import './main-view.scss';
 
@@ -85,19 +85,11 @@ class MainView extends React.Component {
   }
 
   render() {
-    // Check if user logged in and if login selected
-    // if (!user && loginUser)
-    //   return <LoginView onLoggedIn={user => this.onLoggedIn(user)} getMainView={() => this.getMainView()} />;
-
-    // Check if user logged in and if register selected
-    // if (!user && registerUser)
-    //   return <RegisterView onLoggedIn={user => this.onLoggedIn(user)} getMainView={() => this.getMainView()} />;
-
-    // if (!movies) return <div className="main-view"/>;
 
     return (
 
       <Router>
+
         <div className="main-view">
         
         <HeaderView />
@@ -110,8 +102,6 @@ class MainView extends React.Component {
 
         <Route path="/movies/:movieId" render={({match}) => <MovieView movieId={ match.params.movieId }/>} />
 
-        </div>
-
         <Route path="/genres/:name" render={({match}) => <GenreView genreName={match.params.name}/> } />
 
         <Route path="/directors/:name" render={({match}) => <DirectorView directorName={match.params.name}/> } />
@@ -123,6 +113,9 @@ class MainView extends React.Component {
             deleteFavouriteMovie={(movieId) => this.deleteFavouriteMovie(movieId)}/>
         }}
         />
+
+        </div>
+
       </Router>
     );
   }
