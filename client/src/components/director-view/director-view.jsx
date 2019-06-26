@@ -1,8 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import { Container } from 'react-bootstrap';
 
-export function DirectorView( {director} ) {
+function DirectorView( {movies, directorName} ) {
+
+  if (!movies.length) return null;
+
+  const director = movies.find((m) => m.director.name === directorName).director;
 
   return(
     <div className="director-view">
@@ -15,8 +20,8 @@ export function DirectorView( {director} ) {
 }
 
 DirectorView.propTypes = {
-  director: PropTypes.shape({
-    name: PropTypes.string,
-    bio: PropTypes.string
-  })
+  movies: PropTypes.array.isRequired,
+  directorName: PropTypes.string.isRequired,
 }
+
+export default connect(({movies}) => ({movies}))(DirectorView);
