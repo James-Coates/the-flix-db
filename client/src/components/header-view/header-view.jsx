@@ -6,8 +6,16 @@ import { connect } from 'react-redux';
 import './header-view.scss';
 
 function HeaderView(props) {
-  const { logout, user } = props;
+  const { user } = props;
 
+  const logout = (user) => {
+    if (!user) {
+      return console.log('No user logged in');
+    }
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+    document.location.reload();
+  }
 
   return (
     <div className="header">
@@ -32,7 +40,7 @@ function HeaderView(props) {
             ) : (
               <Nav>
                 <Link to={`/users/${user}`}><NavItem>Welcome Back {user}</NavItem></Link>
-                <Nav.Link onClick={() => logout()}>Log Out</Nav.Link>
+                <Nav.Link onClick={(user) => logout(user)}>Log Out</Nav.Link>
               </Nav>
             )}
           </Navbar.Collapse>
@@ -43,8 +51,7 @@ function HeaderView(props) {
 }
 
 HeaderView.propTypes = {
-  getRegisterView: PropTypes.func.isRequired,
-  getLoginView: PropTypes.func.isRequired,
-};
+  user: PropTypes.string.isRequired
+}
 
 export default connect(({user}) => ({user}))(HeaderView);
