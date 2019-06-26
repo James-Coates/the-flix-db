@@ -24,7 +24,6 @@ const mapStateToProps = state => {
 function MoviesList(props) {
   const { movies } = props;
 
-  console.log(movies);
   if (!movies || !movies.length) return <div className="main-view" />
 
   return (
