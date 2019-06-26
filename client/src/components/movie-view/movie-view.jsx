@@ -11,7 +11,7 @@ function MovieView(props) {
 
   if (!movies || !movies.length) return null;
 
-  const movie = movies.find(m => m._id == movieId);
+  const movie = movies.find(m => m._id.toString() === movieId);
 
   return(
     <div className="movie-view">
@@ -71,15 +71,6 @@ function MovieView(props) {
 export default connect(({movies}) => ({movies}))(MovieView)
 
 MovieView.propTypes = {
-  movie: PropTypes.shape({
-    title: PropTypes.string,
-    description: PropTypes.string,
-    imageUrl: PropTypes.string,
-    genre: PropTypes.shape({
-      name: PropTypes.string,
-    }),
-    director: PropTypes.shape({
-      name: PropTypes.string,
-    }),
-  }).isRequired,
+  movies: PropTypes.array.isRequired,
+  movieId: PropTypes.string.isRequired,
 };
