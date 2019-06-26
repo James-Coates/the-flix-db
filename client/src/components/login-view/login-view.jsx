@@ -1,6 +1,7 @@
 /* eslint-disable no-console */
 /* eslint-disable jsx-a11y/label-has-for */
 import React, { useState } from 'react';
+import { Redirect } from 'react-router-dom';
 import axios from 'axios';
 import PropTypes from 'prop-types';
 import { Container, Row, Col, Form, Button } from 'react-bootstrap';
@@ -9,8 +10,9 @@ import './login-view.scss';
 export function LoginView(props) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [toHome, setToHome] = useState('');
 
-  const { getMainView } = props;
+  const { onLoggedIn } = props;
 
   const handleSubmit = e => {
     e.preventDefault();
@@ -20,11 +22,14 @@ export function LoginView(props) {
       password
     })
     .then(response => {
-      const data = response.data;
-      props.onLoggedIn(data);      
+      const authData = response.data;
+      onLoggedIn(authData);
+      setToHome(true);
     })
     .catch(e => console.log('No such user'));
   };
+
+  if (toHome) return <Redirect to='/' />
 
   return (
     <Container fluid className="container-fill">
@@ -58,7 +63,7 @@ export function LoginView(props) {
                   Submit
                 </Button>
               </Form>
-              <Button variant="danger" type="button" block className="form-button" onClick={getMainView}>
+              <Button variant="danger" type="button" block className="form-button" >
                 Cancel
               </Button>
             </div>
@@ -72,5 +77,4 @@ export function LoginView(props) {
 // Define Proptypes
 LoginView.propTypes = {
   onLoggedIn: PropTypes.func.isRequired,
-  getMainView: PropTypes.func.isRequired,
 };
