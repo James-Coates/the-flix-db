@@ -1,5 +1,7 @@
 /* eslint-disable no-console */
 import React, { useState } from 'react';
+import { Redirect } from 'react-router-dom';
+
 import PropTypes from 'prop-types';
 import { Container, Row, Col, Form, Button } from 'react-bootstrap';
 import './register-view.scss';
@@ -10,6 +12,7 @@ export function RegisterView(props) {
   const [password, setPassword] = useState('');
   const [email, setEmail] = useState('');
   const [birthday, setBirthday] = useState('');
+  const [toHome, setToHome] = useState('');
 
   const handleRegister = e => {
     e.preventDefault();
@@ -30,13 +33,16 @@ export function RegisterView(props) {
     axios.post('https://theflixdb.herokuapp.com/login', {
         username: user.username,
         password: user.password
-      })
-      .then(response => {
-        const data = response.data;
-        props.onLoggedIn(data);
-      })
-      .catch(e => console.log('No such user'));
-    };
+    })
+    .then(response => {
+      const data = response.data;
+      props.onLoggedIn(data);
+      setToHome(true);
+    })
+    .catch(e => console.log('No such user'));
+  };
+
+  if (toHome) return <Redirect to='/' />
 
   return (
     <Container fluid className="container-fill">
@@ -98,5 +104,4 @@ export function RegisterView(props) {
 // Define Proptypes
 RegisterView.propTypes = {
   onLoggedIn: PropTypes.func.isRequired,
-  getMainView: PropTypes.func.isRequired,
 };
