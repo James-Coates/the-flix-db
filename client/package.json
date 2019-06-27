@@ -1,6 +1,7 @@
 {
   "name": "client-2",
   "version": "0.1.0",
+  "homepage": "https://theflixdb.herokuapp.com/",
   "private": true,
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.19",
