@@ -57,33 +57,6 @@ class MainView extends React.Component {
     .catch(err => console.log(err));
   }
 
-  addToFavourites(movieId) {
-    console.log(movieId)
-    const username = localStorage.user
-    const token = localStorage.token
-    axios.post(`${apiUrl}/users/${username}/movies/${movieId}`, {
-    }, {
-      headers: { Authorization: `Bearer ${token}` }
-    })
-    .then(response => {
-      console.log(`${movieId} added to favourites`)
-    })
-    .catch(err => console.log('Can\'t add movie'));
-  }
-
-  deleteFavouriteMovie(movieId) {
-    console.log(movieId)
-    const username = localStorage.user
-    const token = localStorage.token
-    axios.delete(`${apiUrl}/users/${username}/movies/${movieId}`, {
-      headers: { Authorization: `Bearer ${token}` }
-    })
-    .then(response => {
-      console.log(`${movieId} deleted to favourites`)
-    })
-    .catch(err => console.log('Can\'t delete movie'));
-  }
-
   render() {
 
     return (
