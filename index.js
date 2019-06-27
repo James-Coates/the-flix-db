@@ -203,6 +203,14 @@ app.delete('/users/:username', passport.authenticate('jwt', { session: false }),
     .catch(err => res.status(500).send(`Error: ${err}`));
 });
 
+if (process.env.NODE_ENV === 'production') {
+  server.use(express.static('client/build'));
+  const path = require('path');
+  server.get('*', (req, res) => {
+    res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
+  });
+}
+
 const port = process.env.PORT || 3000;
 app.listen(port, '0.0.0.0', () => {
   console.log('Listening on port 3000');
