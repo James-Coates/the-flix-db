@@ -61,9 +61,9 @@ app.use((err, req, res, next) => {
 // #region ** ROUTES
 
 // Index Route
-app.get('/', (req, res) => {
-  res.sendFile('index.html', { root: `${__dirname}/public` });
-});
+// app.get('/', (req, res) => {
+//   res.sendFile('index.html', { root: `${__dirname}/public` });
+// });
 
 // Docs Route
 app.get('/documentation', (req, res) => {
